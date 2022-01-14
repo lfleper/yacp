@@ -1,10 +1,45 @@
 <template>
     <ion-content fullscreen>
-        <swiper @swiper="setSwiper" :options="swiperOptions">
-            <swiper-slide class="swiper-no-swiping">
+        <swiper @swiper="setSwiper" :options="swiperOptions" class="swiper-no-swiping">
+            <swiper-slide>
+                <ion-fab @click="openStart" vertical="top" horizontal="end">
+                    <ion-fab-button>
+                        <ion-icon :icon="chevronForwardOutline"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
+
                 <ion-grid>
+                    <ion-row class="ion-justify-content-center sub-page-image">
+                        <img src="../../public/assets/undraw_social_interaction_re_dyjh.svg"/>
+                    </ion-row>
+
                     <ion-row class="ion-justify-content-center">
-                        <img class="login-image" src="../../public/assets/undraw_connection_re_lcud.svg"/>
+                        <h1 class="sub-page-title">Login</h1>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center">
+                        <ion-item>
+                            <ion-label position="floating">username</ion-label>
+                            <ion-input required="true" type="text"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">password</ion-label>
+                            <ion-input required="true" type="password"></ion-input>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center">
+                        <section>
+                            <ion-button expand="block" @click="openLogin">Login</ion-button>
+                        </section>
+                    </ion-row>
+                </ion-grid>
+            </swiper-slide>
+
+            <swiper-slide>
+                <ion-grid>
+                    <ion-row class="ion-justify-content-center main-image">
+                        <img src="../../public/assets/undraw_connection_re_lcud.svg"/>
                     </ion-row>
 
                     <ion-row class="ion-justify-content-center">
@@ -17,18 +52,61 @@
                     <ion-row class="ion-justify-content-center">
                         <section>
                             <ion-button expand="block" @click="openLogin">Login</ion-button>
-                            <ion-button expand="block" @click="openRegistration">Registrieren</ion-button>
+                            <ion-button expand="block" @click="openRegistration">Registration</ion-button>
                         </section>
                     </ion-row>
                 </ion-grid>
             </swiper-slide>
 
             <swiper-slide>
-                <h1>Login</h1>
-            </swiper-slide>
+                <ion-fab @click="openStart" vertical="top" horizontal="start">
+                    <ion-fab-button>
+                        <ion-icon :icon="chevronBackOutline"></ion-icon>
+                    </ion-fab-button>
+                </ion-fab>
 
-            <swiper-slide>
-                <h1>Registration</h1>
+                <ion-grid>
+                    <ion-row class="ion-justify-content-center sub-page-image">
+                        <img src="../../public/assets/undraw_world_re_768g.svg"/>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center">
+                        <h1 class="sub-page-title">Registration</h1>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center">
+                        <ion-item>
+                            <ion-label position="floating">username</ion-label>
+                            <ion-input required="true" type="text"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">firstname</ion-label>
+                            <ion-input required="true" type="text"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">lastname</ion-label>
+                            <ion-input required="true" type="text"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">e-mail</ion-label>
+                            <ion-input required="true" type="email"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">password</ion-label>
+                            <ion-input required="true" type="password"></ion-input>
+                        </ion-item>
+                        <ion-item>
+                            <ion-label position="floating">confirm password</ion-label>
+                            <ion-input required="true" type="password"></ion-input>
+                        </ion-item>
+                    </ion-row>
+
+                    <ion-row class="ion-justify-content-center">
+                        <section>
+                            <ion-button expand="block" @click="openLogin">Register</ion-button>
+                        </section>
+                    </ion-row>
+                </ion-grid>
             </swiper-slide>
         </swiper>
     </ion-content>
@@ -36,11 +114,15 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonRow, IonGrid, IonCol, IonText, IonButton} from '@ionic/vue'
+import {IonContent, IonRow, IonGrid, IonCol, IonText, IonButton, IonItem, IonLabel, IonInput, IonFabButton, IonFab, IonIcon} from '@ionic/vue'
 import {Swiper, SwiperSlide} from 'swiper/vue'
 import 'swiper/css'
 import '@ionic/vue/css/ionic-swiper.css'
 import { ref } from 'vue'
+import { 
+    chevronForwardOutline,
+    chevronBackOutline
+} from 'ionicons/icons';
 
 @Options({
     components: {
@@ -51,27 +133,44 @@ import { ref } from 'vue'
         IonText,
         IonButton,
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        IonItem,
+        IonLabel,
+        IonInput,
+        IonFabButton,
+        IonFab,
+        IonIcon
     }
 })
 export default class LoginPage extends Vue {
 
+    /**
+     * swiper options to disable swiping functionality.
+     */
     swiperOptions: {[key: string]: any} = {
         noSwiping: true
     }
 
     private swiper: any = ref(null)
 
+    data() {
+        return {
+            chevronForwardOutline: chevronForwardOutline,
+            chevronBackOutline: chevronBackOutline
+        }
+    }
+
     setSwiper = (swiper: any) => {
         this.swiper = swiper
+        this.swiper.slideTo(1, false, false)
     }
 
     openStart() {
-        this.swiper.slideTo(0, 300, true)
+        this.swiper.slideTo(1, 300, true)
     }
 
     openLogin() {
-        this.swiper.slideTo(1, 300, true)
+        this.swiper.slideTo(0, 300, true)
     }
 
     openRegistration() {
@@ -95,16 +194,36 @@ section:not(.full-width),
     padding: 0 15px;
 }
 
-.login-image {
-    width: 100%;
-    max-width: 500px;
+.main-image {
     padding: 30px;
+}
+
+.main-image img {
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+}
+
+.sub-page-image {
+    padding: 50px;
+}
+
+.sub-page-image img {
+    width: 60%;
+    height: auto;
+    max-width: 500px;
 }
 
 .title {
     font-family: 'Barlow', sans-serif;
     font-weight: 300;
     font-size: calc(15px + 10vw);
+}
+
+.sub-page-title {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: calc(10px + 6vw);
 }
 
 .subtitle {
@@ -119,6 +238,24 @@ ion-button {
     font-size: 16px;
 }
 
+ion-item {
+    width: 90%;
+    padding: 5px;
+}
+
+ion-input, ion-label {
+    font-family: 'Barlow', sans-serif;
+}
+
+ion-input {
+    font-weight: 100;
+    font-size: 4vw;
+}
+
+ion-label {
+    font-weight: 300;
+}
+
 @media all and (min-width: 680px) {
     .title {
         font-size: 82px;
@@ -126,8 +263,14 @@ ion-button {
     .subtitle {
         font-size: 21px;
     }
-    section {
+    .sub-page-title {
+        font-size: 51px;
+    }
+    section, ion-item {
         width: 646px;
+    }
+    ion-input {
+        font-size: 27px;
     }
 }
 </style>
