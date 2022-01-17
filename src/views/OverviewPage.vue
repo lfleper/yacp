@@ -1,8 +1,16 @@
 <template>
     <ion-content fullscreen>
         <ion-header translucent>
+            <ion-segment>
+                <ion-segment-button value="contacts">
+                    <ion-label>contacts</ion-label>
+                </ion-segment-button>
+                <ion-segment-button value="chats">
+                    <ion-label>chats</ion-label>
+                </ion-segment-button>
+            </ion-segment>
             <ion-toolbar>
-                <ion-searchbar>
+                <ion-searchbar @ionChange="filterConversations"> 
                 </ion-searchbar>
             </ion-toolbar>
         </ion-header>
@@ -12,16 +20,16 @@
                 <ion-title>Conversations</ion-title>
             </ion-list-header>
 
-            <ion-item v-for="chat in chats" v-bind:key="chat.id">
+            <ion-item v-for="conversation in getConversations" v-bind:key="conversation.id">
                 <ion-avatar slot="start">
                     <img src="../../public/assets/reshot-icon-avatar.svg">
                 </ion-avatar>
                 <ion-label>
-                    <h2>{{chat.name}}</h2>
+                    <h2>{{conversation.name}}</h2>
                     <h3></h3>
-                    <p>{{chat.last_message}}</p>
+                    <p>{{conversation.last_message}}</p>
                 </ion-label>
-                <ion-note slot="end" color="secondary">{{getChatDate(chat.last_message_date)}}</ion-note>
+                <ion-note slot="end" color="secondary">{{getConversationDateString(conversation.last_message_date)}}</ion-note>
             </ion-item>
         </ion-list>
     </ion-content>
@@ -29,8 +37,13 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonHeader, IonToolbar, IonSearchbar, IonList, IonListHeader, IonTitle, IonItem, IonAvatar, IonNote, IonLabel} from '@ionic/vue'
+import {
+    IonContent, IonHeader, IonToolbar, IonSearchbar, IonList, IonListHeader, IonTitle, 
+    IonItem, IonAvatar, IonNote, IonLabel, IonSegment, IonSegmentButton} 
+from '@ionic/vue'
 import {isToday, isYesterday, getTimeAsString, isDateInThisWeek, getDayNameByDayNumber} from '../util/DateUtil'
+import {Conversation, test_conversations} from '../model/Conversation'
+
 
 @Options({
     components: {
@@ -44,43 +57,22 @@ import {isToday, isYesterday, getTimeAsString, isDateInThisWeek, getDayNameByDay
         IonItem,
         IonAvatar,
         IonNote,
-        IonLabel
+        IonLabel,
+        IonSegment,
+        IonSegmentButton
     }
 })
 export default class OverviewPage extends Vue {
 
-    data() {
-        return {
-            chats: [
-                {
-                    id: 1,
-                    name: "Tristan Schneider",
-                    last_message: "Was geht?",
-                    last_message_date: new Date()
-                },
-                {
-                    id: 2,
-                    name: "Henry Sosnitzky",
-                    last_message: "Wie gehts dir? Wie gehts dir? Wie gehts dir? Wie gehts dir? sdasdasd",
-                    last_message_date: new Date('2022-01-15T12:30:00')
-                },
-                {
-                    id: 3,
-                    name: "Lukas Fleper",
-                    last_message: "Morgen 20 Uhr",
-                    last_message_date: new Date('2022-01-13T08:00:00')
-                },
-                {
-                    id: 4,
-                    name: "Ivayla Dimitrava Marinova",
-                    last_message: "Hallo.",
-                    last_message_date: new Date('2022-01-09T08:00:00')
-                }
-            ]
-        }
+    private conversations: Conversation[] = []
+    private filteredConversations: Conversation[] = []
+
+    mounted() {
+        this.conversations = test_conversations
+        this.filteredConversations = test_conversations
     }
 
-    getChatDate(date: Date): string {
+    getConversationDateString(date: Date): string {
         if (isToday(date)) {
             return getTimeAsString(date, 'de-DE')
         } else if (isYesterday(date)) {
@@ -90,6 +82,20 @@ export default class OverviewPage extends Vue {
         } else {
             return date.toISOString().slice(0, 10)
         }
+    }
+
+    filterConversations(e: CustomEvent): void {
+        if (e.detail.value === "") {
+            this.filteredConversations = this.conversations
+        } else {
+            this.filteredConversations = this.conversations.filter(conversation => 
+                conversation.name.toUpperCase().includes(e.detail.value.toUpperCase())
+            )
+        }
+    }
+
+    get getConversations(): Conversation[] {
+        return this.filteredConversations;
     }
 
 }
