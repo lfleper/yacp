@@ -20,17 +20,24 @@
                 <ion-title>Conversations</ion-title>
             </ion-list-header>
 
-            <ion-item v-for="conversation in getConversations" v-bind:key="conversation.id">
-                <ion-avatar slot="start">
-                    <img src="../../public/assets/reshot-icon-avatar.svg">
-                </ion-avatar>
-                <ion-label>
-                    <h2>{{conversation.name}}</h2>
-                    <h3></h3>
-                    <p>{{conversation.last_message}}</p>
-                </ion-label>
-                <ion-note slot="end" color="secondary">{{getConversationDateString(conversation.last_message_date)}}</ion-note>
-            </ion-item>
+            <ion-item-sliding v-for="conversation in getConversations" v-bind:key="conversation.id"> 
+                <ion-item>
+                    <ion-avatar slot="start">
+                        <img src="../../public/assets/reshot-icon-avatar.svg">
+                    </ion-avatar>
+                    <ion-label>
+                        <h2>{{conversation.name}}</h2>
+                        <h3></h3>
+                        <p>{{conversation.last_message}}</p>
+                    </ion-label>
+                    <ion-note slot="end" color="secondary">{{getConversationDateString(conversation.last_message_date)}}</ion-note>
+                </ion-item>
+
+                <ion-item-options slide="end">
+                    <ion-item-option color="danger" @click="deleteConversation(conversation)">Delete</ion-item-option>
+                </ion-item-options>
+            </ion-item-sliding>
+
         </ion-list>
     </ion-content>
 </template>
@@ -39,7 +46,8 @@
 import {Vue, Options} from 'vue-class-component'
 import {
     IonContent, IonHeader, IonToolbar, IonSearchbar, IonList, IonListHeader, IonTitle, 
-    IonItem, IonAvatar, IonNote, IonLabel, IonSegment, IonSegmentButton} 
+    IonItem, IonAvatar, IonNote, IonLabel, IonSegment, IonSegmentButton, IonItemSliding,
+    IonItemOption, IonItemOptions} 
 from '@ionic/vue'
 import {isToday, isYesterday, getTimeAsString, isDateInThisWeek, getDayNameByDayNumber} from '../util/DateUtil'
 import {Conversation, test_conversations} from '../model/Conversation'
@@ -59,7 +67,10 @@ import {Conversation, test_conversations} from '../model/Conversation'
         IonNote,
         IonLabel,
         IonSegment,
-        IonSegmentButton
+        IonSegmentButton,
+        IonItemSliding,
+        IonItemOption,
+        IonItemOptions
     }
 })
 export default class OverviewPage extends Vue {
@@ -76,12 +87,16 @@ export default class OverviewPage extends Vue {
         if (isToday(date)) {
             return getTimeAsString(date, 'de-DE')
         } else if (isYesterday(date)) {
-            return "Gestern"
+            return "Yesterday"
         } else if (isDateInThisWeek(date)) {
             return getDayNameByDayNumber(date.getDay())
         } else {
             return date.toISOString().slice(0, 10)
         }
+    }
+
+    deleteConversation(conversation: Conversation): void {
+        console.log("deleted")
     }
 
     filterConversations(e: CustomEvent): void {

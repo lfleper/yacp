@@ -1,5 +1,5 @@
 
-const weekdayGerman = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+const weekdayEnglish = ['Su.', 'Mo.', 'Tu.', 'We.', 'Th.', 'Fr.', 'Sa.']
 
 /**
  * Check if a given date corresponds to today's date.
@@ -68,6 +68,6 @@ export function isDateInThisWeek(date: Date): boolean {
 }
 
 export function getDayNameByDayNumber(day: number): string {
-    return weekdayGerman[day]
+    return weekdayEnglish[day]
 }
 
