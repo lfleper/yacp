@@ -45,7 +45,11 @@ export default class OverviewPage extends Vue {
     private activeSegment = 'conversations'
 
     doFilter(e: CustomEvent): void {
-        (this.$refs.conversationComponent as any).filterConversations(e);
+        if (this.activeSegment === 'conversations') {
+            (this.$refs.conversationComponent as any).filterConversations(e)
+        } else if(this.activeSegment === 'contacts') {
+            (this.$refs.contactComponent as any).filterContacts(e)
+        }
     }
 
     segmentChanged(e: CustomEvent): void {

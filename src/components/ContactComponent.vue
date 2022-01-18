@@ -20,7 +20,7 @@ import {IonList, IonListHeader, IonTitle} from '@ionic/vue'
 export default class ContactComponent extends Vue {
 
     filterContacts(e: CustomEvent): void {
-        console.log("filtered");
+        console.log(e);
     }
 
 }
