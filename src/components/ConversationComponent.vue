@@ -4,7 +4,10 @@
             <ion-title>Conversations</ion-title>
         </ion-list-header>
 
-        <ion-item-sliding v-for="conversation in getConversations" v-bind:key="conversation.id"> 
+        <ion-item-sliding 
+            v-for="conversation in getConversations" 
+            v-bind:key="conversation.id"
+        > 
             <ion-item>
                 <ion-avatar slot="start">
                     <img src="../../public/assets/reshot-icon-avatar.svg">
@@ -52,7 +55,7 @@ export default class ConversationComponent extends Vue {
     private conversations: Conversation[] = []
     private filteredConversations: Conversation[] = []
 
-    mounted() {
+    mounted(): void {
         this.conversations = test_conversations
         this.filteredConversations = this.conversations 
     }
