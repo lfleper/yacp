@@ -78,5 +78,17 @@ export const test_conversations: Conversation[] = [
         name: "Ivayla Dimitrava Marinova",
         last_message: "Hallo.",
         last_message_date: new Date('2022-01-09T08:00:00')
+    },
+    {
+        id: 13,
+        name: "Iitrava Marinova",
+        last_message: "Hallo.",
+        last_message_date: new Date('2022-01-09T08:00:00')
+    },
+    {
+        id: 14,
+        name: "asdasdasdahjdkaskj awjhdkas",
+        last_message: "Hallo.",
+        last_message_date: new Date('2022-01-09T08:00:00')
     }
 ]
