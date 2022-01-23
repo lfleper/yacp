@@ -70,6 +70,7 @@ export default class OverviewPage extends Vue {
 <style scoped>
 ion-content {
     position: absolute;
+    top: 48px !important;
     bottom: 56px !important;
 }
 ion-footer {
