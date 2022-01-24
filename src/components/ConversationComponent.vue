@@ -78,13 +78,9 @@ export default class ConversationComponent extends Vue {
     }
 
     filterConversations(e: CustomEvent): void {
-        if (e.detail.value === "") {
-            this.filteredConversations = this.conversations
-        } else {
-            this.filteredConversations = this.conversations.filter(conversation => 
-                conversation.name.toUpperCase().includes(e.detail.value.toUpperCase())
-            )
-        }
+        this.filteredConversations = this.conversations.filter(conversation => 
+            conversation.name.toUpperCase().includes(e.detail.value.toUpperCase())
+        )
     }
 
     get getConversations(): Conversation[] {

@@ -7,7 +7,7 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content fullscreen>
+        <ion-content>
             <conversation-component v-if="activeSegment === 'conversations'" ref="conversationComponent"></conversation-component>
             <contact-component v-if="activeSegment === 'contacts'" ref="contactComponent"></contact-component>
         </ion-content>
@@ -69,9 +69,9 @@ export default class OverviewPage extends Vue {
 
 <style scoped>
 ion-content {
-    position: absolute;
-    top: 48px !important;
-    bottom: 56px !important;
+    position: fixed;
+    /* full height - header + footer */
+    height: calc(100% - 104px);
 }
 ion-footer {
     position: fixed;

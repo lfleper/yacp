@@ -52,13 +52,9 @@ export default class ContactComponent extends Vue {
     }
 
     filterContacts(e: CustomEvent): void {
-        if (e.detail.value === "") {
-            this.filteredContacts = this.contacts
-        } else {
-            this.filteredContacts = this.contacts.filter(contact => 
-                contact.name.toUpperCase().includes(e.detail.value.toUpperCase())
-            )
-        }
+        this.filteredContacts = this.contacts.filter(contact => 
+            contact.name.toUpperCase().includes(e.detail.value.toUpperCase())
+        )
     }
 
     deleteContact(contact: Contact): void {
