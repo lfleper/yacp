@@ -10,7 +10,8 @@
         </ion-header>
 
         <ion-content class="ion-padding">
-
+            <chat-component v-for="chat in chats" v-bind:key="chat.id" :chat="chat">
+            </chat-component>
         </ion-content>
 
         <ion-footer class="ion-no-border">
@@ -27,7 +28,9 @@
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
-import {sendOutline, chevronBackOutline} from 'ionicons/icons';
+import {sendOutline, chevronBackOutline} from 'ionicons/icons'
+import {Chat, test_chats} from '@/model/Chat'
+import ChatComponent from '@/components/ChatComponent.vue'
 
 @Options({
     components: {
@@ -38,10 +41,12 @@ import {sendOutline, chevronBackOutline} from 'ionicons/icons';
         IonInput,
         IonButton,
         IonIcon,
-        IonTitle
+        IonTitle,
+        ChatComponent
     }
 })
 export default class ChatPage extends Vue {
+    private chats: Chat[] = test_chats
 
     data() {
         return {
@@ -55,6 +60,10 @@ export default class ChatPage extends Vue {
 </script>
 
 <style scoped>
+ion-content {
+    position: fixed;
+    height: calc(100% - 112px);
+}
 ion-footer {
     position: fixed;
     position: -webkit-sticky;
