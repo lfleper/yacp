@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <ion-page>
         <ion-header translucent>
             <ion-toolbar>
                 <ion-searchbar @ionChange="doFilter"> 
@@ -26,12 +26,12 @@
                 </ion-segment>
             </ion-toolbar>
         </ion-footer>
-    </div>
+    </ion-page>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonHeader, IonToolbar, IonSearchbar,IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
+import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar,IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
 import ConversationComponent from '@/components/ConversationComponent.vue'
 import ContactComponent from '@/components/ContactComponent.vue'
 
@@ -46,7 +46,8 @@ import ContactComponent from '@/components/ContactComponent.vue'
         IonSegmentButton,
         ConversationComponent,
         ContactComponent,
-        IonFooter
+        IonFooter,
+        IonPage
     }
 })
 export default class OverviewPage extends Vue {
@@ -71,7 +72,7 @@ export default class OverviewPage extends Vue {
 ion-content {
     position: fixed;
     /* full height - header + footer */
-    height: calc(100% - 104px);
+    /*height: calc(100% - 104px);*/
 }
 ion-footer {
     position: fixed;

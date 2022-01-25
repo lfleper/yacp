@@ -7,6 +7,7 @@
         <ion-item-sliding 
             v-for="conversation in getConversations" 
             v-bind:key="conversation.id"
+            @click="openChat"
         > 
             <ion-item>
                 <ion-avatar slot="start">
@@ -36,6 +37,7 @@ import {
     IonList, IonListHeader, IonTitle, IonItem, IonAvatar, IonNote, 
     IonLabel, IonItemSliding, IonItemOption, IonItemOptions
 } from '@ionic/vue'
+import {useRouter} from 'vue-router'
 
 @Options({
     components: {
@@ -54,6 +56,7 @@ import {
 export default class ConversationComponent extends Vue {
     private conversations: Conversation[] = []
     private filteredConversations: Conversation[] = []
+    private router = useRouter()
 
     mounted(): void {
         this.conversations = test_conversations
@@ -81,6 +84,11 @@ export default class ConversationComponent extends Vue {
         this.filteredConversations = this.conversations.filter(conversation => 
             conversation.name.toUpperCase().includes(e.detail.value.toUpperCase())
         )
+    }
+
+    openChat(conversation: Conversation): void {
+        console.log("checked")
+        this.router.push({name: 'Chat'})
     }
 
     get getConversations(): Conversation[] {

@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-button fill="clear" slot="start">
+                <ion-button fill="clear" slot="start" @click="showOverview">
                     <ion-icon :icon="chevronBackOutline"></ion-icon>
                 </ion-button>
                 <ion-title>Lukas Fleper</ion-title>
@@ -22,14 +22,15 @@
                 </ion-button>
             </ion-toolbar>
         </ion-footer>
-    </div>
+    </ion-page>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
+import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
 import {Chat, test_chats} from '@/model/Chat'
+import {useRouter} from 'vue-router'
 import ChatComponent from '@/components/ChatComponent.vue'
 
 @Options({
@@ -42,11 +43,13 @@ import ChatComponent from '@/components/ChatComponent.vue'
         IonButton,
         IonIcon,
         IonTitle,
-        ChatComponent
+        ChatComponent,
+        IonPage
     }
 })
 export default class ChatPage extends Vue {
     private chats: Chat[] = test_chats
+    private router = useRouter()
 
     data() {
         return {
@@ -55,6 +58,9 @@ export default class ChatPage extends Vue {
         }
     }
 
+    showOverview(): void {
+        this.router.push({name: 'Overview'})
+    }
 }
 
 </script>
@@ -62,7 +68,7 @@ export default class ChatPage extends Vue {
 <style scoped>
 ion-content {
     position: fixed;
-    height: calc(100% - 112px);
+    /*height: calc(100% - 112px);*/
 }
 ion-footer {
     position: fixed;
