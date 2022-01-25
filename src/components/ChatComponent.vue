@@ -2,6 +2,9 @@
     <div class="chat-item" :class="chat.isSender ? 'chat-item-sender' : 'chat-item-receiver'">
         <div class="chat-bubble" :class="chat.isSender ? 'chat-bubble-sender' : 'chat-bubble-receiver'">
             {{chat.body}}
+            <div class="chat-time">
+                {{time}}
+            </div>
         </div>
     </div>
 </template>
@@ -18,6 +21,9 @@ import {Chat} from '@/model/Chat'
 export default class ChatComponent extends Vue {
     private chat!: Chat
 
+    get time(): string {
+        return this.chat.timestamp.toLocaleTimeString([], {timeStyle: 'short'})
+    }
 }
 </script>
 
@@ -35,15 +41,19 @@ export default class ChatComponent extends Vue {
     justify-content: flex-end;
 }
 .chat-bubble-receiver {
-    background: var(--ion-color-secondary);
+    background: var(--bubble-receiver);
 }
 .chat-bubble-sender {
-    background: var(--ion-color-danger);
+    background: var(--bubble-sender);
 }
 .chat-bubble {
     max-width: 75%;
     border-radius: 20px;
     position: relative;
     padding: 12px 16px;
+}
+.chat-time {
+    color: var(--ion-color-dark);
+    font-size: 12px;
 }
 </style>
