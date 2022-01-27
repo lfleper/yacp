@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar,IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
+import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
 import ConversationComponent from '@/components/ConversationComponent.vue'
 import ContactComponent from '@/components/ContactComponent.vue'
 
@@ -72,7 +72,7 @@ export default class OverviewPage extends Vue {
 ion-content {
     position: fixed;
     /* full height - header + footer */
-    /*height: calc(100% - 104px);*/
+    height: calc(100% - 56px);
 }
 ion-footer {
     position: fixed;

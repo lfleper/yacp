@@ -67,8 +67,9 @@ export default class ChatPage extends Vue {
 
 <style scoped>
 ion-content {
+    top: 56px;
     position: fixed;
-    /*height: calc(100% - 112px);*/
+    height: calc(100% - 112px);
 }
 ion-footer {
     position: fixed;
