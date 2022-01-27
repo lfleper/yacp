@@ -9,7 +9,7 @@
 
         <ion-content>
             <conversation-component v-if="activeSegment === 'conversations'" ref="conversationComponent"></conversation-component>
-            <contact-component v-if="activeSegment === 'search'" ref="contactComponent"></contact-component>
+            <search-contact-component v-if="activeSegment === 'search'" ref="searchContactComponent"></search-contact-component>
         </ion-content>
 
         <ion-footer collapse="fade">
@@ -33,7 +33,7 @@
 import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
 import ConversationComponent from '@/components/ConversationComponent.vue'
-import ContactComponent from '@/components/ContactComponent.vue'
+import SearchContactComponent from '@/components/SearchContactComponent.vue'
 
 @Options({
     components: {
@@ -45,7 +45,7 @@ import ContactComponent from '@/components/ContactComponent.vue'
         IonSegment,
         IonSegmentButton,
         ConversationComponent,
-        ContactComponent,
+        SearchContactComponent,
         IonFooter,
         IonPage
     }
@@ -57,7 +57,7 @@ export default class OverviewPage extends Vue {
         if (this.activeSegment === 'conversations') {
             (this.$refs.conversationComponent as any).filterConversations(e)
         } else if(this.activeSegment === 'search') {
-            (this.$refs.contactComponent as any).filterContacts(e)
+            (this.$refs.searchContactComponent as any).filterContacts(e)
         }
     }
 
