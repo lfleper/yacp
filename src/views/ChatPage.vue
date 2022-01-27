@@ -10,8 +10,16 @@
         </ion-header>
 
         <ion-content class="ion-padding">
-            <chat-component v-for="chat in chats" v-bind:key="chat.id" :chat="chat">
-            </chat-component>
+            <div v-for="(chat, index) in chats" v-bind:key="chat.id">
+                <div 
+                    class="message-date" 
+                    v-if="index === 0 || chat.timestamp.toLocaleDateString() !== chats[index-1].timestamp.toLocaleDateString()"
+                >
+                    {{this.chats[index].timestamp.toLocaleDateString()}}
+                </div>
+                <chat-component :chat="chat">
+                </chat-component>
+            </div>
         </ion-content>
 
         <ion-footer class="ion-no-border">
@@ -93,5 +101,12 @@ ion-footer {
     --padding-start: 12px;
     --padding-end: 12px;
     --background: var(--ion-color-ligth);
+}
+.message-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--ion-color-dark);
 }
 </style>
