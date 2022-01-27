@@ -8,7 +8,7 @@
             v-for="conversation in getConversations" 
             v-bind:key="conversation.id"
         > 
-            <ion-item @click="openChat">
+            <ion-item @click="openChat(conversation)">
                 <ion-avatar slot="start">
                     <img src="../../public/assets/reshot-icon-avatar.svg">
                 </ion-avatar>
@@ -86,8 +86,7 @@ export default class ConversationComponent extends Vue {
     }
 
     openChat(conversation: Conversation): void {
-        console.log("todo")
-        this.router.push({name: 'Chat'})
+        this.router.push({name: 'Chat', params: { id: conversation.id }})
     }
 
     get getConversations(): Conversation[] {

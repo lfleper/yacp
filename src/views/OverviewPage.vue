@@ -9,7 +9,7 @@
 
         <ion-content>
             <conversation-component v-if="activeSegment === 'conversations'" ref="conversationComponent"></conversation-component>
-            <contact-component v-if="activeSegment === 'contacts'" ref="contactComponent"></contact-component>
+            <contact-component v-if="activeSegment === 'search'" ref="contactComponent"></contact-component>
         </ion-content>
 
         <ion-footer collapse="fade">
@@ -17,8 +17,8 @@
                 <ion-segment 
                     @ionChange="segmentChanged" 
                     v-model="activeSegment">
-                    <ion-segment-button value="contacts">
-                        <ion-label>contacts</ion-label>
+                    <ion-segment-button value="search">
+                        <ion-label>search</ion-label>
                     </ion-segment-button>
                     <ion-segment-button value="conversations">
                         <ion-label>chats</ion-label>
@@ -56,7 +56,7 @@ export default class OverviewPage extends Vue {
     doFilter(e: CustomEvent): void {
         if (this.activeSegment === 'conversations') {
             (this.$refs.conversationComponent as any).filterConversations(e)
-        } else if(this.activeSegment === 'contacts') {
+        } else if(this.activeSegment === 'search') {
             (this.$refs.contactComponent as any).filterContacts(e)
         }
     }

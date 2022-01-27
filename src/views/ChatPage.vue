@@ -30,7 +30,7 @@ import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
 import {Chat, test_chats} from '@/model/Chat'
-import {useRouter} from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
 import ChatComponent from '@/components/ChatComponent.vue'
 
 @Options({
@@ -49,6 +49,7 @@ import ChatComponent from '@/components/ChatComponent.vue'
 })
 export default class ChatPage extends Vue {
     private chats: Chat[] = test_chats
+    private conversationId = ""
     private router = useRouter()
 
     data() {
@@ -56,6 +57,12 @@ export default class ChatPage extends Vue {
             sendOutline: sendOutline,
             chevronBackOutline: chevronBackOutline
         }
+    }
+
+    mounted() {
+        const route = useRoute()
+        this.conversationId = route.params.id[0]
+        console.log(this.conversationId)
     }
 
     showOverview(): void {
