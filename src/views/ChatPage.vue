@@ -9,7 +9,7 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding">
+        <ion-content class="ion-padding" :scroll-events="true">
             <div v-for="(chat, index) in chats" v-bind:key="chat.id">
                 <div 
                     class="message-date" 
@@ -41,6 +41,13 @@ import {Chat, test_chats} from '@/model/Chat'
 import {useRouter, useRoute} from 'vue-router'
 import ChatComponent from '@/components/ChatComponent.vue'
 
+/**
+ * Interface to bypass the typecheck of ts.
+ */
+interface IonContentInterface {
+    scrollToBottom(): void
+}
+
 @Options({
     components: {
         IonContent,
@@ -70,11 +77,16 @@ export default class ChatPage extends Vue {
     mounted() {
         const route = useRoute()
         this.conversationId = route.params.id[0]
+        this.content?.scrollToBottom()
         console.log(this.conversationId)
     }
 
     showOverview(): void {
         this.router.push({name: 'Overview'})
+    }
+
+    get content(): IonContentInterface| null {
+        return document.querySelector('ion-content')
     }
 }
 
