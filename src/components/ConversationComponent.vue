@@ -7,9 +7,8 @@
         <ion-item-sliding 
             v-for="conversation in getConversations" 
             v-bind:key="conversation.id"
-            @click="openChat"
         > 
-            <ion-item>
+            <ion-item @click="openChat">
                 <ion-avatar slot="start">
                     <img src="../../public/assets/reshot-icon-avatar.svg">
                 </ion-avatar>
@@ -87,7 +86,7 @@ export default class ConversationComponent extends Vue {
     }
 
     openChat(conversation: Conversation): void {
-        console.log("checked")
+        console.log("todo")
         this.router.push({name: 'Chat'})
     }
 
