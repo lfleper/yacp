@@ -160,20 +160,20 @@ export default class LoginPage extends Vue {
         }
     }
 
-    setSwiper = (swiper: any) => {
+    setSwiper(swiper: any): void {
         this.swiper = swiper
         this.swiper.slideTo(1, false, false)
     }
 
-    openStart() {
+    openStart(): void {
         this.swiper.slideTo(1, 300, true)
     }
 
-    openLogin() {
+    openLogin(): void {
         this.swiper.slideTo(0, 300, true)
     }
 
-    openRegistration() {
+    openRegistration(): void {
         this.swiper.slideTo(2, 300, true)
     }
 
