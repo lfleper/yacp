@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <ion-page>
         <ion-header translucent>
             <ion-toolbar>
                 <ion-searchbar @ionChange="doFilter"> 
@@ -9,7 +9,7 @@
 
         <ion-content>
             <conversation-component v-if="activeSegment === 'conversations'" ref="conversationComponent"></conversation-component>
-            <contact-component v-if="activeSegment === 'contacts'" ref="contactComponent"></contact-component>
+            <search-contact-component v-if="activeSegment === 'search'" ref="searchContactComponent"></search-contact-component>
         </ion-content>
 
         <ion-footer collapse="fade">
@@ -17,8 +17,8 @@
                 <ion-segment 
                     @ionChange="segmentChanged" 
                     v-model="activeSegment">
-                    <ion-segment-button value="contacts">
-                        <ion-label>contacts</ion-label>
+                    <ion-segment-button value="search">
+                        <ion-label>search</ion-label>
                     </ion-segment-button>
                     <ion-segment-button value="conversations">
                         <ion-label>chats</ion-label>
@@ -26,14 +26,14 @@
                 </ion-segment>
             </ion-toolbar>
         </ion-footer>
-    </div>
+    </ion-page>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonHeader, IonToolbar, IonSearchbar,IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
+import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
 import ConversationComponent from '@/components/ConversationComponent.vue'
-import ContactComponent from '@/components/ContactComponent.vue'
+import SearchContactComponent from '@/components/SearchContactComponent.vue'
 
 @Options({
     components: {
@@ -45,8 +45,9 @@ import ContactComponent from '@/components/ContactComponent.vue'
         IonSegment,
         IonSegmentButton,
         ConversationComponent,
-        ContactComponent,
-        IonFooter
+        SearchContactComponent,
+        IonFooter,
+        IonPage
     }
 })
 export default class OverviewPage extends Vue {
@@ -55,8 +56,8 @@ export default class OverviewPage extends Vue {
     doFilter(e: CustomEvent): void {
         if (this.activeSegment === 'conversations') {
             (this.$refs.conversationComponent as any).filterConversations(e)
-        } else if(this.activeSegment === 'contacts') {
-            (this.$refs.contactComponent as any).filterContacts(e)
+        } else if(this.activeSegment === 'search') {
+            (this.$refs.searchContactComponent as any).filterContacts(e)
         }
     }
 
@@ -71,6 +72,7 @@ export default class OverviewPage extends Vue {
 ion-content {
     position: fixed;
     /* full height - header + footer */
+    top: 48px;
     height: calc(100% - 104px);
 }
 ion-footer {

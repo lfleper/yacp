@@ -1,17 +1,25 @@
 <template>
-    <div>
+    <ion-page>
         <ion-header>
             <ion-toolbar>
-                <ion-button fill="clear" slot="start">
+                <ion-button fill="clear" slot="start" @click="showOverview">
                     <ion-icon :icon="chevronBackOutline"></ion-icon>
                 </ion-button>
                 <ion-title>Lukas Fleper</ion-title>
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding">
-            <chat-component v-for="chat in chats" v-bind:key="chat.id" :chat="chat">
-            </chat-component>
+        <ion-content class="ion-padding" :scroll-events="true">
+            <div v-for="(chat, index) in chats" v-bind:key="chat.id">
+                <div 
+                    class="message-date" 
+                    v-if="index === 0 || chat.timestamp.toLocaleDateString() !== chats[index-1].timestamp.toLocaleDateString()"
+                >
+                    {{this.chats[index].timestamp.toLocaleDateString()}}
+                </div>
+                <chat-component :chat="chat">
+                </chat-component>
+            </div>
         </ion-content>
 
         <ion-footer class="ion-no-border">
@@ -22,15 +30,23 @@
                 </ion-button>
             </ion-toolbar>
         </ion-footer>
-    </div>
+    </ion-page>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
+import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
 import {Chat, test_chats} from '@/model/Chat'
+import {useRouter, useRoute} from 'vue-router'
 import ChatComponent from '@/components/ChatComponent.vue'
+
+/**
+ * Interface to bypass the typecheck of ts.
+ */
+interface IonContentInterface {
+    scrollToBottom(): void
+}
 
 @Options({
     components: {
@@ -42,11 +58,14 @@ import ChatComponent from '@/components/ChatComponent.vue'
         IonButton,
         IonIcon,
         IonTitle,
-        ChatComponent
+        ChatComponent,
+        IonPage
     }
 })
 export default class ChatPage extends Vue {
     private chats: Chat[] = test_chats
+    private conversationId = ""
+    private router = useRouter()
 
     data() {
         return {
@@ -55,12 +74,27 @@ export default class ChatPage extends Vue {
         }
     }
 
+    mounted() {
+        const route = useRoute()
+        this.conversationId = route.params.id[0]
+        this.content?.scrollToBottom()
+        console.log(this.conversationId)
+    }
+
+    showOverview(): void {
+        this.router.go(-1);
+    }
+
+    get content(): IonContentInterface| null {
+        return document.querySelector('ion-content')
+    }
 }
 
 </script>
 
 <style scoped>
 ion-content {
+    top: 56px;
     position: fixed;
     height: calc(100% - 112px);
 }
@@ -79,5 +113,12 @@ ion-footer {
     --padding-start: 12px;
     --padding-end: 12px;
     --background: var(--ion-color-ligth);
+}
+.message-date {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--ion-color-dark);
 }
 </style>
