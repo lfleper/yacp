@@ -72,7 +72,8 @@ export default class OverviewPage extends Vue {
 ion-content {
     position: fixed;
     /* full height - header + footer */
-    height: calc(100% - 56px);
+    top: 48px;
+    height: calc(100% - 104px);
 }
 ion-footer {
     position: fixed;

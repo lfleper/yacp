@@ -82,7 +82,7 @@ export default class ChatPage extends Vue {
     }
 
     showOverview(): void {
-        this.router.push({name: 'Overview'})
+        this.router.go(-1);
     }
 
     get content(): IonContentInterface| null {
