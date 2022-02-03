@@ -20,17 +20,17 @@
                     <ion-row class="ion-justify-content-center">
                         <ion-item>
                             <ion-label position="floating">username</ion-label>
-                            <ion-input required="true" type="text"></ion-input>
+                            <ion-input v-model="userLogin.username" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">password</ion-label>
-                            <ion-input required="true" type="password"></ion-input>
+                            <ion-input v-model="userLogin.password" required="true" type="password"></ion-input>
                         </ion-item>
                     </ion-row>
 
                     <ion-row class="ion-justify-content-center">
                         <section>
-                            <ion-button expand="block" @click="openLogin">Login</ion-button>
+                            <ion-button expand="block" @click="doLogin">Login</ion-button>
                         </section>
                     </ion-row>
                 </ion-grid>
@@ -77,33 +77,33 @@
                     <ion-row class="ion-justify-content-center">
                         <ion-item>
                             <ion-label position="floating">username</ion-label>
-                            <ion-input required="true" type="text"></ion-input>
+                            <ion-input v-model="userRegistration.username" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">firstname</ion-label>
-                            <ion-input required="true" type="text"></ion-input>
+                            <ion-input v-model="userRegistration.firstname" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">lastname</ion-label>
-                            <ion-input required="true" type="text"></ion-input>
+                            <ion-input v-model="userRegistration.lastname" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">e-mail</ion-label>
-                            <ion-input required="true" type="email"></ion-input>
+                            <ion-input v-model="userRegistration.eMail" required="true" type="email"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">password</ion-label>
-                            <ion-input required="true" type="password"></ion-input>
+                            <ion-input v-model="userRegistration.password" required="true" type="password"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">confirm password</ion-label>
-                            <ion-input required="true" type="password"></ion-input>
+                            <ion-input v-model="userRegistration.confirmPassword" required="true" type="password"></ion-input>
                         </ion-item>
                     </ion-row>
 
                     <ion-row class="ion-justify-content-center">
                         <section>
-                            <ion-button expand="block" @click="openLogin">Register</ion-button>
+                            <ion-button expand="block" @click="doRegistration">Register</ion-button>
                         </section>
                     </ion-row>
                 </ion-grid>
@@ -123,6 +123,10 @@ import {
     chevronForwardOutline,
     chevronBackOutline
 } from 'ionicons/icons';
+import {UserLogin, UserRegistration} from '@/auth/User'
+import {LoginError} from '@/exception/LoginError'
+import {RegistrationError} from '@/exception/RegistrationError'
+import {checkValidRegistration, checkValidLogin} from '@/util/LoginValidator'
 
 @Options({
     components: {
@@ -143,6 +147,8 @@ import {
     }
 })
 export default class LoginPage extends Vue {
+    private userRegistration = new UserRegistration()
+    private userLogin = new UserLogin()
 
     /**
      * swiper options to disable swiping functionality.
@@ -175,6 +181,22 @@ export default class LoginPage extends Vue {
 
     openRegistration(): void {
         this.swiper.slideTo(2, 300, true)
+    }
+
+    doLogin(): void {
+        try {
+            checkValidLogin(this.userLogin) 
+        } catch (err) {
+            console.error((err as LoginError).message)
+        }
+    }
+
+    doRegistration(): void {
+        try {
+            checkValidRegistration(this.userRegistration) 
+        } catch (err) {
+            console.error((err as RegistrationError).message)
+        }
     }
 
 }
