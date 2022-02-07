@@ -114,7 +114,7 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonRow, IonGrid, IonCol, IonText, IonButton, IonItem, IonLabel, IonInput, IonFabButton, IonFab, IonIcon} from '@ionic/vue'
+import {IonContent, IonRow, IonGrid, IonCol, IonText, IonButton, IonItem, IonLabel, IonInput, IonFabButton, IonFab, IonIcon, toastController} from '@ionic/vue'
 import {Swiper, SwiperSlide} from 'swiper/vue'
 import 'swiper/css'
 import '@ionic/vue/css/ionic-swiper.css'
@@ -188,6 +188,7 @@ export default class LoginPage extends Vue {
             checkValidLogin(this.userLogin) 
         } catch (err) {
             console.error((err as LoginError).message)
+            this.openToast((err as LoginError).message)
         }
     }
 
@@ -196,7 +197,18 @@ export default class LoginPage extends Vue {
             checkValidRegistration(this.userRegistration) 
         } catch (err) {
             console.error((err as RegistrationError).message)
+            this.openToast((err as RegistrationError).message)
         }
+    }
+
+    async openToast(msg: string): Promise<void> {
+        const toast = await toastController.create({
+            message: msg,
+            duration: 2000,
+            position: 'bottom'
+        })
+
+        return toast.present()
     }
 
 }
