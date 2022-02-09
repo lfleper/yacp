@@ -8,7 +8,7 @@ export class ChatApi extends AuthApi {
     }
 
     public getChats(): Promise<Conversation[]> {
-        return super.request<Conversation[]>("chat", 'GET', {})
+        return  super.request<Conversation[]>("chat", 'GET');
     }
 
     //public deleteChats(token: Token)

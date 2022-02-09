@@ -7,10 +7,10 @@ export const apiConfig = {
     baseUrl: base + "api/",
     timeout: 30000,
     withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-    }
+}
+export const apiHeaders: {[key: string]: string} = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
 }
 
 export interface ApiIntf {
@@ -23,27 +23,26 @@ export class AuthApi implements ApiIntf {
 
     constructor(storage: Storage) {
         this.storage = storage
-        this.storage.get('token')
-            .then(resp => this.token = resp)
     }
 
-    public async request<T>(url: string, method: string, body: object): Promise<T> {
-        console.log(this.token)
-        if (this.token === undefined) {
-            throw new Error('No token found.')
-        }
-
-        body = {...body, token: this.token.token, user_id: this.token.user_id}
+    public async request<T>(url: string, method: string, body?: object): Promise<T> {
+        if (!this.token) 
+            this.token = await this.storage.get('token');
+        if(!this.token)
+            throw new Error("no token");
+        const headers = apiHeaders;
+        headers['User'] = this.token.user_id.toString();
+        headers['Bearer-Token'] = this.token.token;
         const resp = await fetch(apiConfig.baseUrl + url, {
             method,
             mode: 'cors',
             cache: 'no-cache',
-            headers: apiConfig.headers,
-            body: JSON.stringify(body)
+            headers,
+            body: body && JSON.stringify(body)
         })
         if (resp.status === 401) {
             const tokenResp = await this.getTokenByRefreshToken()
-            if (tokenResp && tokenResp.token) {
+            if (tokenResp && tokenResp.token ) {
                 await this.storage.set('token', tokenResp)
                 this.token = tokenResp
                 return this.request(url, method, body)
@@ -76,7 +75,7 @@ export class Api implements ApiIntf {
             method,
             mode: 'cors',
             cache: 'no-cache',
-            headers: apiConfig.headers,
+            headers: apiHeaders,
             body: JSON.stringify(body)
         })
         if (!resp.ok) {
