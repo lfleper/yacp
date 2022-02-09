@@ -3,7 +3,6 @@ import {LoginError} from "@/exception/LoginError"
 import {RegistrationError} from "@/exception/RegistrationError"
 
 const eMailExpression = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-const nameExpression = /^[A-Z][-'a-zA-Z]+,?\s[A-Z][-'a-zA-Z]{1,19}$/
 const usernameExpression = /^[A-Za-z0-9_-]{3,16}$/
 
 /**
@@ -23,7 +22,7 @@ function isValidEMail(eMail: string): boolean {
  * @returns True if valid format.
  */
 function isValidName(name: string): boolean {
-    return nameExpression.test(name)
+    return name.length >= 2
 }
 
 /**
@@ -64,11 +63,11 @@ export function checkValidLogin(userLogin: UserLogin): void {
  * @param userRegistration UserRegistration Form Model.
  */
 export function checkValidRegistration(userRegistration: UserRegistration): void {
-    if (!isValidName(userRegistration.firstname))
+    if (!isValidName(userRegistration.first_name))
         throw new RegistrationError('invalid firstname')
-    if (!isValidName(userRegistration.lastname))
+    if (!isValidName(userRegistration.last_name))
         throw new RegistrationError('invalid lastname')
-    if (!isValidEMail(userRegistration.eMail)) 
+    if (!isValidEMail(userRegistration.email)) 
         throw new RegistrationError('invalid e-mail')
     if (userRegistration.password !== userRegistration.confirmPassword)
         throw new RegistrationError('passwords don\'t match')

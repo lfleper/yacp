@@ -81,15 +81,15 @@
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">firstname</ion-label>
-                            <ion-input v-model="userRegistration.firstname" required="true" type="text"></ion-input>
+                            <ion-input v-model="userRegistration.first_name" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">lastname</ion-label>
-                            <ion-input v-model="userRegistration.lastname" required="true" type="text"></ion-input>
+                            <ion-input v-model="userRegistration.last_name" required="true" type="text"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">e-mail</ion-label>
-                            <ion-input v-model="userRegistration.eMail" required="true" type="email"></ion-input>
+                            <ion-input v-model="userRegistration.email" required="true" type="email"></ion-input>
                         </ion-item>
                         <ion-item>
                             <ion-label position="floating">password</ion-label>
@@ -123,10 +123,11 @@ import {
     chevronForwardOutline,
     chevronBackOutline
 } from 'ionicons/icons';
-import {UserLogin, UserRegistration} from '@/auth/User'
+import {Token, UserLogin, UserRegistration} from '@/auth/User'
 import {LoginError} from '@/exception/LoginError'
-import {RegistrationError} from '@/exception/RegistrationError'
 import {checkValidRegistration, checkValidLogin} from '@/util/LoginValidator'
+import {useRouter} from 'vue-router'
+import {AuthService} from '@/auth/AuthService'
 
 @Options({
     components: {
@@ -149,6 +150,8 @@ import {checkValidRegistration, checkValidLogin} from '@/util/LoginValidator'
 export default class LoginPage extends Vue {
     private userRegistration = new UserRegistration()
     private userLogin = new UserLogin()
+    private authService = new AuthService()
+    private router = useRouter()
 
     /**
      * swiper options to disable swiping functionality.
@@ -164,6 +167,12 @@ export default class LoginPage extends Vue {
             chevronForwardOutline: chevronForwardOutline,
             chevronBackOutline: chevronBackOutline
         }
+    }
+
+    async beforeCreate(): Promise<void> {
+        const token = await this.$storage.get('token')
+        if (token && token.token)
+            this.router.push({name: 'Overview'})
     }
 
     setSwiper(swiper: any): void {
@@ -183,22 +192,37 @@ export default class LoginPage extends Vue {
         this.swiper.slideTo(2, 300, true)
     }
 
-    doLogin(): void {
+    async doLogin(): Promise<void> {
+        let token = null
         try {
             checkValidLogin(this.userLogin) 
+            const data = await this.authService.login(this.userLogin);
+            token = data
         } catch (err) {
             console.error((err as LoginError).message)
             this.openToast((err as LoginError).message)
         }
+        if (token)
+            this.setTokenAndRedirect(token)
     }
 
-    doRegistration(): void {
+    async doRegistration(): Promise<void> {
+        let token = null
         try {
             checkValidRegistration(this.userRegistration) 
+            const data = await this.authService.register(this.userRegistration)
+            token = data
         } catch (err) {
-            console.error((err as RegistrationError).message)
-            this.openToast((err as RegistrationError).message)
+            console.error((err as Error).message)
+            this.openToast((err as Error).message)
         }
+        if (token)
+            this.setTokenAndRedirect(token)
+    }
+
+    setTokenAndRedirect(token: Token): void {
+        this.$storage.set('token', token)
+        this.router.push({name: 'Overview'})
     }
 
     async openToast(msg: string): Promise<void> {

@@ -17,12 +17,18 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/overview',
     name: 'Overview',
-    component: OverviewPage
+    component: OverviewPage,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/chat/:id',
     name: 'Chat',
-    component: ChatPage
+    component: ChatPage,
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
