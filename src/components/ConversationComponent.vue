@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import {Conversation, test_conversations} from '@/model/Conversation'
+import {Conversation, test_conversations} from '@/types/Conversation'
 import {getDayNameByDayNumber, getTimeAsString, isDateInThisWeek, isToday, isYesterday} from '@/util/DateUtil'
 import {Vue, Options} from 'vue-class-component'
 import {
@@ -90,7 +90,7 @@ export default class ConversationComponent extends Vue {
     }
 
     get getConversations(): Conversation[] {
-        return this.filteredConversations;
+        return this.filteredConversations
     }
 
 }

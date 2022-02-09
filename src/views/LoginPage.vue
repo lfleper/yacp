@@ -127,7 +127,7 @@ import {Token, UserLogin, UserRegistration} from '@/auth/User'
 import {LoginError} from '@/exception/LoginError'
 import {checkValidRegistration, checkValidLogin} from '@/util/LoginValidator'
 import {useRouter} from 'vue-router'
-import {AuthService} from '@/auth/AuthService'
+import {UserApi} from '@/auth/UserApi'
 
 @Options({
     components: {
@@ -150,7 +150,7 @@ import {AuthService} from '@/auth/AuthService'
 export default class LoginPage extends Vue {
     private userRegistration = new UserRegistration()
     private userLogin = new UserLogin()
-    private authService = new AuthService()
+    private userApi = new UserApi()
     private router = useRouter()
 
     /**
@@ -167,12 +167,6 @@ export default class LoginPage extends Vue {
             chevronForwardOutline: chevronForwardOutline,
             chevronBackOutline: chevronBackOutline
         }
-    }
-
-    async beforeCreate(): Promise<void> {
-        const token = await this.$storage.get('token')
-        if (token && token.token)
-            this.router.push({name: 'Overview'})
     }
 
     setSwiper(swiper: any): void {
@@ -196,7 +190,7 @@ export default class LoginPage extends Vue {
         let token = null
         try {
             checkValidLogin(this.userLogin) 
-            const data = await this.authService.login(this.userLogin);
+            const data = await this.userApi.login(this.userLogin);
             token = data
         } catch (err) {
             console.error((err as LoginError).message)
@@ -210,7 +204,7 @@ export default class LoginPage extends Vue {
         let token = null
         try {
             checkValidRegistration(this.userRegistration) 
-            const data = await this.authService.register(this.userRegistration)
+            const data = await this.userApi.register(this.userRegistration)
             token = data
         } catch (err) {
             console.error((err as Error).message)

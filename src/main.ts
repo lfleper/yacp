@@ -43,16 +43,20 @@ async function init(): Promise<void> {
    * visit a page.
    */
   router.beforeEach(async (to, from, next) => {
+    const token = await tokenStorage.instance.get('token')
     if (to.matched.some(record => record.meta.requiresAuth)) {
-      const token = await tokenStorage.instance.get('token')
       if (!token || !token.token) {
         next({name: 'Login'})
       } else {
         next()
       }
     } else {
-      next()
-    }
+      if (token && token.token) {
+        next({name: 'Overview'})
+      } else {
+        next()
+      }
+    }   
   })
 }
 init()

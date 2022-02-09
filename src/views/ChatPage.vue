@@ -37,7 +37,7 @@
 import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
-import {Chat, test_chats} from '@/model/Chat'
+import {Chat, test_chats} from '@/types/Chat'
 import {useRouter, useRoute} from 'vue-router'
 import ChatComponent from '@/components/ChatComponent.vue'
 

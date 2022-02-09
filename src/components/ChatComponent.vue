@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {Chat} from '@/model/Chat'
+import {Chat} from '@/types/Chat'
 
 @Options({
     props: {

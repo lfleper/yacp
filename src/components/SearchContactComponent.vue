@@ -18,7 +18,7 @@
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
 import {IonList, IonListHeader, IonTitle, IonItem, IonLabel, IonAvatar} from '@ionic/vue'
-import {SearchContact, test_searchContacts} from '@/model/SearchContact'
+import {SearchContact, test_searchContacts} from '@/types/SearchContact'
 
 @Options({
     components: {
