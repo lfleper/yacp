@@ -43,6 +43,7 @@ export class AuthApi implements ApiIntf {
         if (resp.status === 401) {
             const tokenResp = await this.getTokenByRefreshToken()
             if (tokenResp && tokenResp.token ) {
+                await this.storage.remove('token')
                 await this.storage.set('token', tokenResp)
                 this.token = tokenResp
                 return this.request(url, method, body)
@@ -60,10 +61,9 @@ export class AuthApi implements ApiIntf {
     }
     
     private async getTokenByRefreshToken(): Promise<Token> {
-        const token = await this.storage.get('token')
         return this.request<Token>('user/refresh', 'POST', {
-            user_id: token.user_id,
-            refresh_token: token.refresh_token
+            user_id: this.token?.user_id,
+            refresh_token: this.token?.refresh_token
         })
     }
 

@@ -1,4 +1,8 @@
 <template>
+    <ion-refresher slot="fixed" @ionRefresh="refreshConversations">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <ion-list>
         <ion-list-header>
             <ion-title>Conversations</ion-title>
@@ -17,15 +21,20 @@
                     <h3></h3>
                     <p>{{conversation.last_message}}</p>
                 </ion-label>
-                <ion-note slot="end" color="secondary">{{getConversationDateString(conversation.last_message_date)}}</ion-note>
+                <ion-note 
+                    v-if="conversation.last_message_date" 
+                    slot="end" 
+                    color="secondary">{{getConversationDateString(conversation.last_message_date)}}
+                </ion-note>
             </ion-item>
 
             <ion-item-options slide="end">
                 <ion-item-option color="danger" @click="deleteConversation(conversation)">Delete</ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
+
         <ion-item v-if="getConversations.length === 0">
-            <ion-text>You have to conversations.</ion-text>
+            <ion-text>No conversations found.</ion-text>
         </ion-item>
 
     </ion-list>
@@ -37,7 +46,8 @@ import {getDayNameByDayNumber, getTimeAsString, isDateInThisWeek, isToday, isYes
 import {Vue, Options} from 'vue-class-component'
 import {
     IonList, IonListHeader, IonTitle, IonItem, IonAvatar, IonNote, 
-    IonLabel, IonItemSliding, IonItemOption, IonItemOptions, IonText
+    IonLabel, IonItemSliding, IonItemOption, IonItemOptions, IonText,
+    IonRefresher, IonRefresherContent, RefresherCustomEvent
 } from '@ionic/vue'
 import {useRouter} from 'vue-router'
 import {ChatApi} from '@/api/ChatApi'
@@ -54,7 +64,9 @@ import {ChatApi} from '@/api/ChatApi'
         IonItemSliding,
         IonItemOption,
         IonItemOptions,
-        IonText
+        IonText,
+        IonRefresher,
+        IonRefresherContent
     }
 })
 export default class ConversationComponent extends Vue {
@@ -86,8 +98,32 @@ export default class ConversationComponent extends Vue {
     }
 
     deleteConversation(conversation: Conversation): void {
-        this.conversations = this.conversations.filter(c => c.id !== conversation.id)
-        this.filteredConversations = this.conversations
+        this.chatApi?.deleteChats(conversation.id)
+            .then(() => {
+                this.conversations = this.conversations.filter(c => c.id !== conversation.id)
+                this.filteredConversations = this.conversations
+            })
+            .catch(err => {
+                // temporary handle of json parse error.
+                // is thrown because the api returns a success string. 
+                if (err instanceof SyntaxError) {
+                    this.conversations = this.conversations.filter(c => c.id !== conversation.id)
+                    this.filteredConversations = this.conversations
+                }
+            })
+    }
+
+    refreshConversations(event: RefresherCustomEvent): void {
+        this.chatApi?.getChats()
+            .then(data => {
+                this.conversations = data
+                this.filteredConversations = data
+                event.target.complete()
+            })
+            .catch(err => {
+                console.log(err)
+                event.target.cancel()
+            })
     }
 
     filterConversations(e: CustomEvent): void {

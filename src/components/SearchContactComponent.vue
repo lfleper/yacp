@@ -4,7 +4,10 @@
             <ion-title>Search result</ion-title>
         </ion-list-header>
 
-        <ion-item v-for="contact in getContacts" v-bind:key="contact.id">
+        <ion-item 
+            v-for="contact in getContacts" v-bind:key="contact.id"
+            @click="createChat(contact)"
+        >
             <ion-avatar slot="start">
                 <img src="../../public/assets/reshot-icon-avatar.svg">
             </ion-avatar>
@@ -18,7 +21,9 @@
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
 import {IonList, IonListHeader, IonTitle, IonItem, IonLabel, IonAvatar} from '@ionic/vue'
-import {SearchContact, test_searchContacts} from '@/types/SearchContact'
+import {SearchContact} from '@/types/SearchContact'
+import {UserSearchApi} from '@/api/UserSearchApi'
+import { ChatApi } from '@/api/ChatApi'
 
 @Options({
     components: {
@@ -32,16 +37,27 @@ import {SearchContact, test_searchContacts} from '@/types/SearchContact'
 })
 export default class ContactComponent extends Vue {
     private contacts: SearchContact[] = []
+    private userSearchApi?: UserSearchApi
+    private chatApi?: ChatApi
 
-    mounted(): void {
-        this.contacts = test_searchContacts
+    beforeCreate(): void {
+        this.userSearchApi = new UserSearchApi(this.$storage)
+        this.chatApi = new ChatApi(this.$storage)
     }
 
     filterContacts(e: CustomEvent): void {
-        /*this.filteredContacts = this.contacts.filter(contact => 
-            contact.name.toUpperCase().includes(e.detail.value.toUpperCase())
-        )*/
-        console.log(e.detail.value)
+        if (e.detail.value && e.detail.value !== '') {
+            this.userSearchApi?.getUsers(e.detail.value)
+                .then(data => this.contacts = data || [])
+                .catch(err => console.log('failed to laod contacts: ' + err))
+        } else {
+            this.contacts = []
+        }
+    }
+
+    async createChat(contact: SearchContact): Promise<void> {
+        await this.chatApi?.createChat([contact], contact.username)
+        console.log('chat created')
     }
 
     get getContacts(): SearchContact[] {
