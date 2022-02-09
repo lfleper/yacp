@@ -23,12 +23,14 @@ export class AuthApi implements ApiIntf {
 
     constructor(storage: Storage) {
         this.storage = storage
-        this.storage.get('token').then(resp => this.token = resp)
+        this.storage.get('token')
+            .then(resp => this.token = resp)
     }
 
     public async request<T>(url: string, method: string, body: object): Promise<T> {
-        if (!this.token) {
-            throw new Error('no user auth found.')
+        console.log(this.token)
+        if (this.token === undefined) {
+            throw new Error('No token found.')
         }
 
         body = {...body, token: this.token.token, user_id: this.token.user_id}

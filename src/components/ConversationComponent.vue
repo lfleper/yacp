@@ -24,19 +24,23 @@
                 <ion-item-option color="danger" @click="deleteConversation(conversation)">Delete</ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
+        <ion-item v-if="getConversations.length === 0">
+            <ion-text>You have to conversations.</ion-text>
+        </ion-item>
 
     </ion-list>
 </template>
 
 <script lang="ts">
-import {Conversation, test_conversations} from '@/types/Conversation'
+import {Conversation} from '@/types/Conversation'
 import {getDayNameByDayNumber, getTimeAsString, isDateInThisWeek, isToday, isYesterday} from '@/util/DateUtil'
 import {Vue, Options} from 'vue-class-component'
 import {
     IonList, IonListHeader, IonTitle, IonItem, IonAvatar, IonNote, 
-    IonLabel, IonItemSliding, IonItemOption, IonItemOptions
+    IonLabel, IonItemSliding, IonItemOption, IonItemOptions, IonText
 } from '@ionic/vue'
 import {useRouter} from 'vue-router'
+import {ChatApi} from '@/api/ChatApi'
 
 @Options({
     components: {
@@ -49,17 +53,24 @@ import {useRouter} from 'vue-router'
         IonLabel,
         IonItemSliding,
         IonItemOption,
-        IonItemOptions
+        IonItemOptions,
+        IonText
     }
 })
 export default class ConversationComponent extends Vue {
     private conversations: Conversation[] = []
     private filteredConversations: Conversation[] = []
     private router = useRouter()
+    private chatApi?: ChatApi
 
-    mounted(): void {
-        this.conversations = test_conversations
-        this.filteredConversations = this.conversations 
+    beforeCreate(): void {
+        this.chatApi = new ChatApi(this.$storage)
+        this.chatApi?.getChats()
+            .then(data => {
+                this.conversations = data
+                this.filteredConversations = data
+            })
+            .catch(err => console.log(err))
     }
 
     getConversationDateString(date: Date): string {
