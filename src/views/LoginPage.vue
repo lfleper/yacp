@@ -1,124 +1,129 @@
 <template>
-    <ion-content fullscreen>
-        <swiper @swiper="setSwiper" :options="swiperOptions" class="swiper-no-swiping">
-            <swiper-slide>
-                <ion-fab @click="openStart" vertical="top" horizontal="end">
-                    <ion-fab-button>
-                        <ion-icon :icon="chevronForwardOutline"></ion-icon>
-                    </ion-fab-button>
-                </ion-fab>
+    <ion-page>
+        <ion-content fullscreen>
+            <swiper @swiper="setSwiper" :options="swiperOptions" class="swiper-no-swiping">
+                <swiper-slide>
+                    <ion-fab @click="openStart" vertical="top" horizontal="end">
+                        <ion-fab-button>
+                            <ion-icon :icon="chevronForwardOutline"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
 
-                <ion-grid>
-                    <ion-row class="ion-justify-content-center sub-page-image">
-                        <img src="../../public/assets/undraw_social_interaction_re_dyjh.svg"/>
-                    </ion-row>
+                    <ion-grid>
+                        <ion-row class="ion-justify-content-center sub-page-image">
+                            <img src="../../public/assets/undraw_social_interaction_re_dyjh.svg"/>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <h1 class="sub-page-title">Login</h1>
-                    </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <h1 class="sub-page-title">Login</h1>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <ion-item>
-                            <ion-label position="floating">username</ion-label>
-                            <ion-input v-model="userLogin.username" required="true" type="text"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">password</ion-label>
-                            <ion-input v-model="userLogin.password" required="true" type="password"></ion-input>
-                        </ion-item>
-                    </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <ion-item>
+                                <ion-label position="floating">username</ion-label>
+                                <ion-input v-model="userLogin.username" required="true" type="text"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">password</ion-label>
+                                <ion-input v-model="userLogin.password" required="true" type="password"></ion-input>
+                            </ion-item>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <section>
-                            <ion-button expand="block" @click="doLogin">Login</ion-button>
-                        </section>
-                    </ion-row>
-                </ion-grid>
-            </swiper-slide>
+                        <ion-row class="ion-justify-content-center">
+                            <section>
+                                <ion-button expand="block" @click="doLogin">Login</ion-button>
+                            </section>
+                        </ion-row>
+                    </ion-grid>
+                </swiper-slide>
 
-            <swiper-slide>
-                <ion-grid>
-                    <ion-row class="ion-justify-content-center main-image">
-                        <img src="../../public/assets/undraw_connection_re_lcud.svg"/>
-                    </ion-row>
+                <swiper-slide>
+                    <ion-grid>
+                        <ion-row class="ion-justify-content-center main-image">
+                            <img src="../../public/assets/undraw_connection_re_lcud.svg"/>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <h1 class="title">YACP</h1>
-                    </ion-row>
-                    <ion-row class="ion-justify-content-center">
-                        <p class="subtitle">Yet Another Chat Programm</p>
-                    </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <h1 class="title">YACP</h1>
+                        </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <p class="subtitle">Yet Another Chat Programm</p>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <section>
-                            <ion-button expand="block" @click="openLogin">Login</ion-button>
-                            <ion-button expand="block" @click="openRegistration">Registration</ion-button>
-                        </section>
-                    </ion-row>
-                </ion-grid>
-            </swiper-slide>
+                        <ion-row class="ion-justify-content-center">
+                            <section>
+                                <ion-button expand="block" @click="openLogin">Login</ion-button>
+                                <ion-button expand="block" @click="openRegistration">Registration</ion-button>
+                            </section>
+                        </ion-row>
+                    </ion-grid>
+                </swiper-slide>
 
-            <swiper-slide>
-                <ion-fab @click="openStart" vertical="top" horizontal="start">
-                    <ion-fab-button>
-                        <ion-icon :icon="chevronBackOutline"></ion-icon>
-                    </ion-fab-button>
-                </ion-fab>
+                <swiper-slide>
+                    <ion-fab @click="openStart" vertical="top" horizontal="start">
+                        <ion-fab-button>
+                            <ion-icon :icon="chevronBackOutline"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
 
-                <ion-grid>
-                    <ion-row class="ion-justify-content-center sub-page-image">
-                        <img src="../../public/assets/undraw_world_re_768g.svg"/>
-                    </ion-row>
+                    <ion-grid>
+                        <ion-row class="ion-justify-content-center sub-page-image">
+                            <img src="../../public/assets/undraw_world_re_768g.svg"/>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <h1 class="sub-page-title">Registration</h1>
-                    </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <h1 class="sub-page-title">Registration</h1>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <ion-item>
-                            <ion-label position="floating">username</ion-label>
-                            <ion-input v-model="userRegistration.username" required="true" type="text"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">firstname</ion-label>
-                            <ion-input v-model="userRegistration.first_name" required="true" type="text"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">lastname</ion-label>
-                            <ion-input v-model="userRegistration.last_name" required="true" type="text"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">e-mail</ion-label>
-                            <ion-input v-model="userRegistration.email" required="true" type="email"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">password</ion-label>
-                            <ion-input v-model="userRegistration.password" required="true" type="password"></ion-input>
-                        </ion-item>
-                        <ion-item>
-                            <ion-label position="floating">confirm password</ion-label>
-                            <ion-input v-model="userRegistration.confirmPassword" required="true" type="password"></ion-input>
-                        </ion-item>
-                    </ion-row>
+                        <ion-row class="ion-justify-content-center">
+                            <ion-item>
+                                <ion-label position="floating">username</ion-label>
+                                <ion-input v-model="userRegistration.username" required="true" type="text"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">firstname</ion-label>
+                                <ion-input v-model="userRegistration.first_name" required="true" type="text"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">lastname</ion-label>
+                                <ion-input v-model="userRegistration.last_name" required="true" type="text"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">e-mail</ion-label>
+                                <ion-input v-model="userRegistration.email" required="true" type="email"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">password</ion-label>
+                                <ion-input v-model="userRegistration.password" required="true" type="password"></ion-input>
+                            </ion-item>
+                            <ion-item>
+                                <ion-label position="floating">confirm password</ion-label>
+                                <ion-input v-model="userRegistration.confirmPassword" required="true" type="password"></ion-input>
+                            </ion-item>
+                        </ion-row>
 
-                    <ion-row class="ion-justify-content-center">
-                        <section>
-                            <ion-button expand="block" @click="doRegistration">Register</ion-button>
-                        </section>
-                    </ion-row>
-                </ion-grid>
-            </swiper-slide>
-        </swiper>
-    </ion-content>
+                        <ion-row class="ion-justify-content-center">
+                            <section>
+                                <ion-button expand="block" @click="doRegistration">Register</ion-button>
+                            </section>
+                        </ion-row>
+                    </ion-grid>
+                </swiper-slide>
+            </swiper>
+        </ion-content>
+    </ion-page>
 </template>
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonRow, IonGrid, IonCol, IonText, IonButton, IonItem, IonLabel, IonInput, IonFabButton, IonFab, IonIcon, toastController} from '@ionic/vue'
+import {
+    IonContent, IonRow, IonGrid, IonCol, IonText, IonButton, IonItem, IonLabel, 
+    IonInput, IonFabButton, IonFab, IonIcon, toastController, IonPage
+} from '@ionic/vue'
 import {Swiper, SwiperSlide} from 'swiper/vue'
 import 'swiper/css'
 import '@ionic/vue/css/ionic-swiper.css'
-import { ref } from 'vue'
+import {ref} from 'vue'
 import { 
     chevronForwardOutline,
     chevronBackOutline
@@ -144,7 +149,8 @@ import {UserApi} from '@/auth/UserApi'
         IonInput,
         IonFabButton,
         IonFab,
-        IonIcon
+        IonIcon,
+        IonPage
     }
 })
 export default class LoginPage extends Vue {

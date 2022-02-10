@@ -3,6 +3,14 @@
         <ion-header translucent>
             <ion-toolbar>
                 <ion-searchbar @ionChange="doFilter"> 
+                    <ion-button fill="clear" class="menu-btn" id="popover-trigger">
+                        <ion-icon :icon="ellipsisVerticalOutline"></ion-icon>
+                    </ion-button>
+                    <ion-popover trigger="popover-trigger" :dismiss-on-select="true">
+                        <ion-item :button="true" @click="signOut">
+                            <ion-label>Abmelden</ion-label>
+                        </ion-item>
+                    </ion-popover>
                 </ion-searchbar>
             </ion-toolbar>
         </ion-header>
@@ -31,9 +39,14 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, IonSegmentButton, IonFooter} from '@ionic/vue'
+import {
+    IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, 
+    IonSegmentButton, IonFooter, IonPopover, IonIcon, IonButton, IonItem
+} from '@ionic/vue'
+import {ellipsisVerticalOutline} from 'ionicons/icons'
 import ConversationComponent from '@/components/ConversationComponent.vue'
 import SearchContactComponent from '@/components/SearchContactComponent.vue'
+import {useRouter} from 'vue-router'
 
 @Options({
     components: {
@@ -47,11 +60,22 @@ import SearchContactComponent from '@/components/SearchContactComponent.vue'
         ConversationComponent,
         SearchContactComponent,
         IonFooter,
-        IonPage
+        IonPage,
+        IonPopover,
+        IonIcon,
+        IonButton,
+        IonItem
     }
 })
 export default class OverviewPage extends Vue {
     private activeSegment = 'conversations'
+    private router = useRouter()
+
+    data() {
+        return {
+            ellipsisVerticalOutline: ellipsisVerticalOutline
+        }
+    }
 
     doFilter(e: CustomEvent): void {
         if (this.activeSegment === 'conversations') {
@@ -59,6 +83,11 @@ export default class OverviewPage extends Vue {
         } else if(this.activeSegment === 'search') {
             (this.$refs.searchContactComponent as any).filterContacts(e)
         }
+    }
+
+    async signOut(): Promise<void> {
+        await this.$storage.remove('token')
+        this.router.push({name: 'Login'})
     }
 
     segmentChanged(e: CustomEvent): void {
@@ -79,5 +108,8 @@ ion-footer {
     position: fixed;
     position: -webkit-sticky;
     bottom: 0;
+}
+.menu-btn {
+
 }
 </style>
