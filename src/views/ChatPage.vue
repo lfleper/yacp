@@ -103,9 +103,9 @@ export default class ChatPage extends Vue {
     sendMessage(){
         if(!this.conversationId)
             return
-        console.log("sendmessage: " + this.currentMessage)
         this.messageApi?.sendMessage(this.conversationId, this.currentMessage)
             .then(data => {
+                data && this.chats.push(data)
                 this.currentMessage = "";
                 this.content?.scrollToBottom()
             })

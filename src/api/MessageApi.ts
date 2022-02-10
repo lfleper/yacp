@@ -8,19 +8,30 @@ export class MessageApi extends AuthApi {
         super(storage)
     }
 
-    public sendMessage(chat_id: number, content: string): Promise<void> {
-        return super.request('message', 'PUT', {
+    public async sendMessage(chat_id: number, content: string): Promise<Chat | undefined> {
+        const message: Chat | undefined = await super.request('message', 'PUT', {
             content,
             chat_id
         })
+        if (!message)
+            return
+        return this.toValidChat(message)
     }
     
     public async getMessages(chat_id: number, count: number, from?: number): Promise<Chat[] | undefined> {
-        const messages: Chat[] | undefined = await super.request('messages/' + chat_id + '/' + count + '/' + (from || '') , 'GET')
-        if (!messages)
+        const resp: Chat[] | undefined = await super.request('messages/' + chat_id + '/' + count + '/' + (from || '') , 'GET')
+        if (!resp)
             return
-        return messages.map(m => {
-            return {...m, timestamp: m.timestamp && new Date(m.timestamp)}
+        const messages = resp.map(m => {
+            return this.toValidChat(m)
         })
+
+        return messages.sort((a: Chat, b: Chat) => {
+            return a.timestamp.getTime() - b.timestamp.getTime()
+        })
+    }
+
+    private toValidChat(c: Chat): Chat {
+        return {...c, timestamp: c.timestamp && new Date(c.timestamp)}
     }
 }
