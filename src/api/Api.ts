@@ -41,6 +41,10 @@ export class AuthApi implements ApiIntf {
             body: body && JSON.stringify(body)
         })
         if (resp.status === 401) {
+            const text = await resp.text();
+            if(text !== "Token invalid")
+                throw new Error('Unauthorized');
+                
             const tokenResp = await this.getTokenByRefreshToken()
             if (tokenResp && tokenResp.token ) {
                 await this.storage.remove('token')
@@ -63,13 +67,12 @@ export class AuthApi implements ApiIntf {
         return await resp.json()
     }
     
-    private async getTokenByRefreshToken(): Promise<Token | undefined> {
-        return this.request<Token>('user/refresh', 'POST', {
+    private getTokenByRefreshToken(): Promise<Token | undefined> {
+        return  this.request<Token>('user/refresh', 'POST', {
             user_id: this.token?.user_id,
             refresh_token: this.token?.refresh_token
-        })
+        });
     }
-
 }
 
 export class Api implements ApiIntf {

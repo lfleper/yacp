@@ -24,8 +24,8 @@
 
         <ion-footer class="ion-no-border">
             <ion-toolbar class="message-toolbar">
-                <ion-input placeholder=".." class="message-input"></ion-input>
-                <ion-button fill="clear" slot="end">
+                <ion-input v-model="currentMessage" placeholder=".." class="message-input"></ion-input>
+                <ion-button @click="sendMessage" fill="clear" slot="end">
                     <ion-icon :icon="sendOutline"></ion-icon>
                 </ion-button>
             </ion-toolbar>
@@ -39,6 +39,7 @@ import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButt
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
 import {Chat, test_chats} from '@/types/Chat'
 import {useRouter, useRoute} from 'vue-router'
+import {MessageApi} from "../api/MessageApi";
 import ChatComponent from '@/components/ChatComponent.vue'
 
 /**
@@ -63,9 +64,15 @@ interface IonContentInterface {
     }
 })
 export default class ChatPage extends Vue {
+    private messageApi?: MessageApi
     private chats: Chat[] = test_chats
-    private conversationId = ""
+    private conversationId?: number;
+    private currentMessage = ""
     private router = useRouter()
+
+    beforeCreate(){
+        this.messageApi = new MessageApi(this.$storage);
+    }
 
     data() {
         return {
@@ -76,13 +83,25 @@ export default class ChatPage extends Vue {
 
     mounted() {
         const route = useRoute()
-        this.conversationId = route.params.id[0]
+        this.conversationId = parseInt(route.params.id[0]);
         this.content?.scrollToBottom()
-        console.log(this.conversationId)
+        
     }
 
     showOverview(): void {
         this.router.go(-1);
+    }
+    sendMessage(){
+        if(!this.conversationId)
+            return
+        console.log("sendmessage: " + this.currentMessage);
+        this.messageApi?.sendMessage(this.conversationId, this.currentMessage)
+            .then(data => {
+                console.log(data);
+                this.currentMessage = "";
+                this.content?.scrollToBottom();
+            })
+            .catch(err => console.log(err))
     }
 
     get content(): IonContentInterface | null {
