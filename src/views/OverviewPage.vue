@@ -3,15 +3,18 @@
         <ion-header translucent>
             <ion-toolbar>
                 <ion-searchbar @ionChange="doFilter" v-model="searchbarValue"> 
+                </ion-searchbar>
+
+                <ion-buttons slot="end">
                     <ion-button fill="clear" class="menu-btn" id="popover-trigger">
                         <ion-icon :icon="ellipsisVerticalOutline"></ion-icon>
                     </ion-button>
-                    <ion-popover trigger="popover-trigger" :dismiss-on-select="true">
-                        <ion-item :button="true" @click="signOut">
-                            <ion-label>Abmelden</ion-label>
-                        </ion-item>
-                    </ion-popover>
-                </ion-searchbar>
+                </ion-buttons>
+                <ion-popover trigger="popover-trigger" :dismiss-on-select="true">
+                    <ion-item :button="true" @click="signOut">
+                        <ion-label>Abmelden</ion-label>
+                    </ion-item>
+                </ion-popover>
             </ion-toolbar>
         </ion-header>
 
@@ -41,7 +44,7 @@
 import {Vue, Options} from 'vue-class-component'
 import {
     IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, 
-    IonSegmentButton, IonFooter, IonPopover, IonIcon, IonButton, IonItem
+    IonSegmentButton, IonFooter, IonPopover, IonIcon, IonButton, IonItem, IonButtons
 } from '@ionic/vue'
 import {ellipsisVerticalOutline} from 'ionicons/icons'
 import ConversationComponent from '@/components/ConversationComponent.vue'
@@ -64,7 +67,8 @@ import {useRouter} from 'vue-router'
         IonPopover,
         IonIcon,
         IonButton,
-        IonItem
+        IonItem,
+        IonButtons
     }
 })
 export default class OverviewPage extends Vue {
