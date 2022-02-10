@@ -18,22 +18,24 @@
                             <h1 class="sub-page-title">Login</h1>
                         </ion-row>
 
-                        <ion-row class="ion-justify-content-center">
-                            <ion-item>
-                                <ion-label position="floating">username</ion-label>
-                                <ion-input v-model="userLogin.username" required="true" type="text"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">password</ion-label>
-                                <ion-input v-model="userLogin.password" required="true" type="password"></ion-input>
-                            </ion-item>
-                        </ion-row>
+                        <form>
+                            <ion-row class="ion-justify-content-center">
+                                <ion-item>
+                                    <ion-label position="floating">username</ion-label>
+                                    <ion-input v-model="userLogin.username" required="true" type="text"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">password</ion-label>
+                                    <ion-input v-model="userLogin.password" required="true" type="password"></ion-input>
+                                </ion-item>
+                            </ion-row>
 
-                        <ion-row class="ion-justify-content-center">
-                            <section>
-                                <ion-button expand="block" @click="doLogin">Login</ion-button>
-                            </section>
-                        </ion-row>
+                            <ion-row class="ion-justify-content-center">
+                                <section>
+                                    <ion-button expand="block" @click="doLogin">Login</ion-button>
+                                </section>
+                            </ion-row>
+                        </form>
                     </ion-grid>
                 </swiper-slide>
 
@@ -75,38 +77,40 @@
                             <h1 class="sub-page-title">Registration</h1>
                         </ion-row>
 
-                        <ion-row class="ion-justify-content-center">
-                            <ion-item>
-                                <ion-label position="floating">username</ion-label>
-                                <ion-input v-model="userRegistration.username" required="true" type="text"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">firstname</ion-label>
-                                <ion-input v-model="userRegistration.first_name" required="true" type="text"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">lastname</ion-label>
-                                <ion-input v-model="userRegistration.last_name" required="true" type="text"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">e-mail</ion-label>
-                                <ion-input v-model="userRegistration.email" required="true" type="email"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">password</ion-label>
-                                <ion-input v-model="userRegistration.password" required="true" type="password"></ion-input>
-                            </ion-item>
-                            <ion-item>
-                                <ion-label position="floating">confirm password</ion-label>
-                                <ion-input v-model="userRegistration.confirmPassword" required="true" type="password"></ion-input>
-                            </ion-item>
-                        </ion-row>
+                        <form>
+                            <ion-row class="ion-justify-content-center">
+                                <ion-item>
+                                    <ion-label position="floating">username</ion-label>
+                                    <ion-input v-model="userRegistration.username" required="true" type="text"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">firstname</ion-label>
+                                    <ion-input v-model="userRegistration.first_name" required="true" type="text"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">lastname</ion-label>
+                                    <ion-input v-model="userRegistration.last_name" required="true" type="text"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">e-mail</ion-label>
+                                    <ion-input v-model="userRegistration.email" required="true" type="email"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">password</ion-label>
+                                    <ion-input v-model="userRegistration.password" required="true" type="password"></ion-input>
+                                </ion-item>
+                                <ion-item>
+                                    <ion-label position="floating">confirm password</ion-label>
+                                    <ion-input v-model="userRegistration.confirmPassword" required="true" type="password"></ion-input>
+                                </ion-item>
+                            </ion-row>
 
-                        <ion-row class="ion-justify-content-center">
-                            <section>
-                                <ion-button expand="block" @click="doRegistration">Register</ion-button>
-                            </section>
-                        </ion-row>
+                            <ion-row class="ion-justify-content-center">
+                                <section>
+                                    <ion-button expand="block" @click="doRegistration">Register</ion-button>
+                                </section>
+                            </ion-row>
+                        </form>
                     </ion-grid>
                 </swiper-slide>
             </swiper>

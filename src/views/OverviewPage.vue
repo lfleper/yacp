@@ -2,7 +2,7 @@
     <ion-page>
         <ion-header translucent>
             <ion-toolbar>
-                <ion-searchbar @ionChange="doFilter"> 
+                <ion-searchbar @ionChange="doFilter" v-model="searchbarValue"> 
                     <ion-button fill="clear" class="menu-btn" id="popover-trigger">
                         <ion-icon :icon="ellipsisVerticalOutline"></ion-icon>
                     </ion-button>
@@ -70,6 +70,7 @@ import {useRouter} from 'vue-router'
 export default class OverviewPage extends Vue {
     private activeSegment = 'conversations'
     private router = useRouter()
+    private searchbarValue = '' 
 
     data() {
         return {
@@ -90,10 +91,11 @@ export default class OverviewPage extends Vue {
         this.router.push({name: 'Login'})
     }
 
-    segmentChanged(e: CustomEvent): void {
+    async segmentChanged(e: CustomEvent): Promise<void> {
+        // clear searchbar input on segment change
+        this.searchbarValue = ''
         this.activeSegment = e.detail.value
     }
-
 }
 </script>
 

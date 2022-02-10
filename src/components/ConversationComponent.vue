@@ -79,8 +79,10 @@ export default class ConversationComponent extends Vue {
         this.chatApi = new ChatApi(this.$storage)
         this.chatApi?.getChats()
             .then(data => {
-                this.conversations = data
-                this.filteredConversations = data
+                if (data) {
+                    this.conversations = data
+                    this.filteredConversations = data
+                }
             })
             .catch(err => console.log(err))
     }
@@ -103,22 +105,17 @@ export default class ConversationComponent extends Vue {
                 this.conversations = this.conversations.filter(c => c.id !== conversation.id)
                 this.filteredConversations = this.conversations
             })
-            .catch(err => {
-                // temporary handle of json parse error.
-                // is thrown because the api returns a success string. 
-                if (err instanceof SyntaxError) {
-                    this.conversations = this.conversations.filter(c => c.id !== conversation.id)
-                    this.filteredConversations = this.conversations
-                }
-            })
+            .catch(err => console.log(err))
     }
 
     refreshConversations(event: RefresherCustomEvent): void {
         this.chatApi?.getChats()
             .then(data => {
-                this.conversations = data
-                this.filteredConversations = data
-                event.target.complete()
+                if (data) {
+                    this.conversations = data
+                    this.filteredConversations = data
+                    event.target.complete()
+                }
             })
             .catch(err => {
                 console.log(err)

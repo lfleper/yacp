@@ -5,8 +5,10 @@
         </ion-list-header>
 
         <ion-item 
-            v-for="contact in getContacts" v-bind:key="contact.id"
+            v-for="contact in getContacts" 
+            v-bind:key="contact.id"
             @click="createChat(contact)"
+            button="true"
         >
             <ion-avatar slot="start">
                 <img src="../../public/assets/reshot-icon-avatar.svg">

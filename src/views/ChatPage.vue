@@ -85,7 +85,7 @@ export default class ChatPage extends Vue {
         this.router.go(-1);
     }
 
-    get content(): IonContentInterface| null {
+    get content(): IonContentInterface | null {
         return document.querySelector('ion-content')
     }
 }

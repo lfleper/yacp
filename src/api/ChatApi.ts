@@ -8,14 +8,13 @@ export class ChatApi extends AuthApi {
         super(storage)
     }
 
-    public getChats(): Promise<Conversation[]> {
-        return super.request<Conversation[]>('chat', 'GET');
+    public getChats(): Promise<Conversation[] | undefined> {
+        return super.request<Conversation[] | undefined>('chat', 'GET');
     }
 
     public createChat(contacts: SearchContact[], groupName?: string): Promise<void> {
         return super.request('chat', 'PUT', {
             user_ids: contacts.map(c => c.id),
-            is_group: contacts.length > 1,
             admin_user_ids: [],
             name: groupName
         })

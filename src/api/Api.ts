@@ -14,7 +14,7 @@ export const apiHeaders: {[key: string]: string} = {
 }
 
 export interface ApiIntf {
-    request<T>(url: string, method: string, body: object): Promise<T>
+    request<T>(url: string, method: string, body: object): Promise<T | undefined>
 }
 
 export class AuthApi implements ApiIntf {
@@ -25,10 +25,10 @@ export class AuthApi implements ApiIntf {
         this.storage = storage
     }
 
-    public async request<T>(url: string, method: string, body?: object): Promise<T> {
+    public async request<T>(url: string, method: string, body?: object): Promise<T | undefined> {
         if (!this.token) 
             this.token = await this.storage.get('token');
-        if(!this.token)
+        if (!this.token)
             throw new Error("no token");
         const headers = apiHeaders;
         headers['User'] = this.token.user_id.toString();
@@ -57,10 +57,13 @@ export class AuthApi implements ApiIntf {
             throw new Error(respText)
         }
 
+        if (resp.status === 201) {
+            return
+        }
         return await resp.json()
     }
     
-    private async getTokenByRefreshToken(): Promise<Token> {
+    private async getTokenByRefreshToken(): Promise<Token | undefined> {
         return this.request<Token>('user/refresh', 'POST', {
             user_id: this.token?.user_id,
             refresh_token: this.token?.refresh_token
