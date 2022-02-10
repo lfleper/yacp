@@ -27,12 +27,12 @@ export class AuthApi implements ApiIntf {
 
     public async request<T>(url: string, method: string, body?: object): Promise<T | undefined> {
         if (!this.token) 
-            this.token = await this.storage.get('token');
+            this.token = await this.storage.get('token')
         if (!this.token)
-            throw new Error("no token");
+            throw new Error("no token")
         const headers = apiHeaders;
-        headers['User'] = this.token.user_id.toString();
-        headers['Bearer-Token'] = this.token.token;
+        headers['User'] = this.token.user_id.toString()
+        headers['Bearer-Token'] = this.token.token
         const resp = await fetch(apiConfig.baseUrl + url, {
             method,
             mode: 'cors',
@@ -43,7 +43,7 @@ export class AuthApi implements ApiIntf {
         if (resp.status === 401) {
             const text = await resp.text();
             if(text !== "Token invalid")
-                throw new Error('Unauthorized');
+                throw new Error('Unauthorized')
                 
             const tokenResp = await this.getTokenByRefreshToken()
             if (tokenResp && tokenResp.token ) {
@@ -68,7 +68,7 @@ export class AuthApi implements ApiIntf {
     }
     
     private getTokenByRefreshToken(): Promise<Token | undefined> {
-        return  this.request<Token>('user/refresh', 'POST', {
+        return this.request<Token>('user/refresh', 'POST', {
             user_id: this.token?.user_id,
             refresh_token: this.token?.refresh_token
         });

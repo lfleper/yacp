@@ -37,7 +37,7 @@
 import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
-import {Chat, test_chats} from '@/types/Chat'
+import {Chat} from '@/types/Chat'
 import {useRouter, useRoute} from 'vue-router'
 import {MessageApi} from "../api/MessageApi";
 import ChatComponent from '@/components/ChatComponent.vue'
@@ -65,7 +65,7 @@ interface IonContentInterface {
 })
 export default class ChatPage extends Vue {
     private messageApi?: MessageApi
-    private chats: Chat[] = test_chats
+    private chats: Chat[] = []
     private conversationId?: number;
     private currentMessage = ""
     private router = useRouter()

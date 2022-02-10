@@ -1,7 +1,7 @@
 export interface Chat {
     id: number,
-    timestamp: Date;
+    timestamp: Date,
     content: string,
-    full_name: string;
+    full_name: string,
     is_sender: boolean,
 }

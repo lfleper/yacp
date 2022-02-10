@@ -1,7 +1,7 @@
 <template>
-    <div class="chat-item" :class="chat.isSender ? 'chat-item-sender' : 'chat-item-receiver'">
-        <div class="chat-bubble" :class="chat.isSender ? 'chat-bubble-sender' : 'chat-bubble-receiver'">
-            {{chat.body}}
+    <div class="chat-item" :class="chat.is_sender ? 'chat-item-sender' : 'chat-item-receiver'">
+        <div class="chat-bubble" :class="chat.is_sender ? 'chat-bubble-sender' : 'chat-bubble-receiver'">
+            {{chat.content}}
             <div class="chat-time">
                 {{time}}
             </div>
