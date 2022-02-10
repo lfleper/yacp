@@ -5,7 +5,7 @@
                 <ion-button fill="clear" slot="start" @click="showOverview">
                     <ion-icon :icon="chevronBackOutline"></ion-icon>
                 </ion-button>
-                <ion-title>Lukas Fleper</ion-title>
+                <ion-title>{{name}}</ion-title>
             </ion-toolbar>
         </ion-header>
 
@@ -66,12 +66,13 @@ interface IonContentInterface {
 export default class ChatPage extends Vue {
     private messageApi?: MessageApi
     private chats: Chat[] = []
-    private conversationId?: number;
+    private conversationId?: number
+    private name = ''
     private currentMessage = ""
     private router = useRouter()
 
     beforeCreate(){
-        this.messageApi = new MessageApi(this.$storage);
+        this.messageApi = new MessageApi(this.$storage)
     }
 
     data() {
@@ -83,23 +84,30 @@ export default class ChatPage extends Vue {
 
     mounted() {
         const route = useRoute()
-        this.conversationId = parseInt(route.params.id[0]);
+        this.conversationId = parseInt(route.params.id[0])
+        this.name = route.params.name as string
         this.content?.scrollToBottom()
-        
+
+        this.messageApi?.getMessages(this.conversationId, 15)
+            .then(data => {
+                if (data)
+                    this.chats = data
+            })
+            .catch(err => console.log('error fetching messages: ', err))
     }
 
     showOverview(): void {
-        this.router.go(-1);
+        this.router.go(-1)
     }
+
     sendMessage(){
         if(!this.conversationId)
             return
-        console.log("sendmessage: " + this.currentMessage);
+        console.log("sendmessage: " + this.currentMessage)
         this.messageApi?.sendMessage(this.conversationId, this.currentMessage)
             .then(data => {
-                console.log(data);
                 this.currentMessage = "";
-                this.content?.scrollToBottom();
+                this.content?.scrollToBottom()
             })
             .catch(err => console.log(err))
     }

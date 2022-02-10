@@ -15,7 +15,12 @@ export class MessageApi extends AuthApi {
         })
     }
     
-    public getMessages(chat_id: number, count: number, from?: number): Promise<Chat[] | undefined> {
-        return super.request('message/' + chat_id + "/" + (from || "") , 'GET')
+    public async getMessages(chat_id: number, count: number, from?: number): Promise<Chat[] | undefined> {
+        const messages: Chat[] | undefined = await super.request('messages/' + chat_id + '/' + count + '/' + (from || '') , 'GET')
+        if (!messages)
+            return
+        return messages.map(m => {
+            return {...m, timestamp: m.timestamp && new Date(m.timestamp)}
+        })
     }
 }

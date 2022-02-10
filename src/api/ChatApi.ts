@@ -8,8 +8,13 @@ export class ChatApi extends AuthApi {
         super(storage)
     }
 
-    public getChats(): Promise<Conversation[] | undefined> {
-        return super.request<Conversation[] | undefined>('chat', 'GET');
+    public async getChats(): Promise<Conversation[] | undefined> {
+        const chats: Conversation[] | undefined = await super.request<Conversation[] | undefined>('chat', 'GET');
+        if (!chats)
+            return
+        return chats.map(c => {
+            return {...c, last_message_date: c.last_message_date && new Date(c.last_message_date as unknown as string)}
+        })
     }
 
     public createChat(contacts: SearchContact[], groupName?: string): Promise<void> {
