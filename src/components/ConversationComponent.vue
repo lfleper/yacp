@@ -12,7 +12,7 @@
             v-for="conversation in getConversations" 
             v-bind:key="conversation.id"
         > 
-            <ion-item @click="openChat(conversation)">
+            <ion-item @click="openChat(conversation)" button="true">
                 <ion-avatar slot="start">
                     <img src="../../public/assets/reshot-icon-avatar.svg">
                 </ion-avatar>
