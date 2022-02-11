@@ -84,9 +84,10 @@ export default class ChatPage extends Vue {
 
     mounted() {
         const route = useRoute()
-        this.conversationId = parseInt(route.params.id[0])
+        this.conversationId = parseInt(route.params.id as string)
         this.name = route.params.name as string
 
+        console.log("Id: " + this.conversationId)
         this.messageApi?.getMessages(this.conversationId, 15)
             .then(data => {
                 if (data)
@@ -103,6 +104,7 @@ export default class ChatPage extends Vue {
     sendMessage(){
         if(!this.conversationId)
             return
+
         this.messageApi?.sendMessage(this.conversationId, this.currentMessage)
             .then(data => {
                 data && this.chats.push(data)

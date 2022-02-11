@@ -225,6 +225,7 @@ export default class LoginPage extends Vue {
     }
 
     setTokenAndRedirect(token: Token): void {
+        this.$storage.clear()
         this.$storage.set('token', token)
         this.router.push({name: 'Overview'})
     }

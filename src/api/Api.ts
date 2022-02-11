@@ -46,7 +46,7 @@ export class AuthApi implements ApiIntf {
                 throw new Error('Unauthorized')
                 
             const tokenResp = await this.getTokenByRefreshToken()
-            if (tokenResp && tokenResp.token ) {
+            if (tokenResp && tokenResp.token) {
                 await this.storage.remove('token')
                 await this.storage.set('token', tokenResp)
                 this.token = tokenResp
