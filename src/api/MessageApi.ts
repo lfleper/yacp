@@ -26,6 +26,10 @@ export class MessageApi extends AuthApi {
             return this.toValidChat(m)
         })
 
+        return this.sort(messages)
+    }
+
+    public sort(messages: Chat[]): Chat[] {
         return messages.sort((a: Chat, b: Chat) => {
             return a.timestamp.getTime() - b.timestamp.getTime()
         })

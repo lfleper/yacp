@@ -9,8 +9,8 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding" scroll-events="true" ref="chatContent" id="chat-content">
-            <div v-for="(chat, index) in chats" v-bind:key="chat.id">
+        <ion-content class="ion-padding" scroll-events="true" ref="chatContent" id="chat-content" @ionScroll="loadNewMessages">
+            <div v-for="(chat, index) in chats" v-bind:key="chat.id" :id="chat.id">
                 <div 
                     class="message-date" 
                     v-if="index === 0 || chat.timestamp.toLocaleDateString() !== chats[index-1].timestamp.toLocaleDateString()"
@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import {Vue, Options} from 'vue-class-component'
-import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
+import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle, ScrollCustomEvent} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
 import {Chat, SocketChat} from '@/types/Chat'
 import {useRouter, useRoute} from 'vue-router'
@@ -118,6 +118,29 @@ export default class ChatPage extends Vue {
                 full_name: chat.full_name,
                 is_sender: chat.is_sender
             })
+            this.toBottom()
+        }
+    }
+
+    loadNewMessages(e: ScrollCustomEvent): void {
+        const lastMessageId = this.chats[0].id
+        if (e.detail.scrollTop === 0 && this.conversationId) {
+            this.messageApi?.getMessages(this.conversationId, 15, this.chats.length)
+                .then(data => {
+                    if (data && this.messageApi) {
+                        this.chats.push(...data)
+                        this.chats = this.messageApi.sort(this.chats)
+
+                        // set scroll position to last shown message.
+                        setTimeout(() => {
+                            const el = this.$el.querySelector("[id='" + lastMessageId + "']")
+                            // new psoition is:
+                            // message position in ion-content - message element height - 10 (offset)
+                            this.content?.scrollToPoint(undefined, el.getBoundingClientRect().top - el.offsetHeight - 10)
+                        }, 10)
+                    }
+                })
+                .catch(err => console.log('no messages found', err))
         }
     }
 
