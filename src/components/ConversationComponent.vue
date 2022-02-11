@@ -79,7 +79,6 @@ export default class ConversationComponent extends Vue {
 
     beforeCreate(): void {
         this.chatApi = new ChatApi(this.$storage)
-        SocketClient.getInstance(this.$storage).addListener(this.onNewChatReceived)
         this.chatApi?.getChats()
             .then(data => {
                 if (data) {
@@ -88,6 +87,10 @@ export default class ConversationComponent extends Vue {
                 }
             })
             .catch(err => console.log(err))
+    }
+
+    mounted() {
+        SocketClient.getInstance(this.$storage).addListener(this.onNewChatReceived)
     }
 
     getConversationDateString(date: Date): string {
@@ -126,8 +129,26 @@ export default class ConversationComponent extends Vue {
             })
     }
 
+    /**
+     * Update chat preview if socket received a new message.
+     */
     onNewChatReceived(chat: SocketChat): void {
-        console.log(chat)
+        const index = this.conversations.findIndex(c => c.id === chat.chat_id)
+        if (index !== -1) {
+            // conversation already exist
+            this.conversations[index].last_message = chat.content
+            this.conversations[index].last_message_date = new Date(chat.timestamp)
+            this.conversations[index].last_message_user = chat.full_name
+        } else {
+            // new conversation
+            this.conversations.push({
+                id: chat.chat_id,
+                name: chat.full_name,
+                last_message: chat.content,
+                last_message_date: new Date(chat.timestamp),
+                last_message_user: chat.full_name
+            })
+        }
     }
 
     filterConversations(e: CustomEvent): void {

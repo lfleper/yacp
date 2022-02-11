@@ -34,7 +34,6 @@ export class SocketClient {
         socket.on('new_message', (data: SocketChat) => {
             this.listeners.forEach(l => {
                 console.log(data)
-                //l(data)
                 l(data)
             })
         })
