@@ -51,6 +51,8 @@ import {
 } from '@ionic/vue'
 import {useRouter} from 'vue-router'
 import {ChatApi} from '@/api/ChatApi'
+import {SocketChat} from '@/types/Chat'
+import {SocketClient} from '@/api/SocketClient'
 
 @Options({
     components: {
@@ -77,6 +79,7 @@ export default class ConversationComponent extends Vue {
 
     beforeCreate(): void {
         this.chatApi = new ChatApi(this.$storage)
+        SocketClient.getInstance(this.$storage).addListener(this.onNewChatReceived)
         this.chatApi?.getChats()
             .then(data => {
                 if (data) {
@@ -121,6 +124,10 @@ export default class ConversationComponent extends Vue {
                 console.log(err)
                 event.target.cancel()
             })
+    }
+
+    onNewChatReceived(chat: SocketChat): void {
+        console.log(chat)
     }
 
     filterConversations(e: CustomEvent): void {

@@ -11,8 +11,8 @@
                     </ion-button>
                 </ion-buttons>
                 <ion-popover trigger="popover-trigger" :dismiss-on-select="true">
-                    <ion-item :button="true" @click="signOut">
-                        <ion-label>Abmelden</ion-label>
+                    <ion-item button="true" @click="signOut">
+                        <ion-label>Sign Out</ion-label>
                     </ion-item>
                 </ion-popover>
             </ion-toolbar>
@@ -50,6 +50,7 @@ import {ellipsisVerticalOutline} from 'ionicons/icons'
 import ConversationComponent from '@/components/ConversationComponent.vue'
 import SearchContactComponent from '@/components/SearchContactComponent.vue'
 import {useRouter} from 'vue-router'
+import {SocketClient} from '@/api/SocketClient'
 
 @Options({
     components: {
@@ -67,19 +68,29 @@ import {useRouter} from 'vue-router'
         IonPopover,
         IonIcon,
         IonButton,
-        IonItem,
-        IonButtons
+        IonButtons,
+        IonItem
     }
 })
 export default class OverviewPage extends Vue {
     private activeSegment = 'conversations'
     private router = useRouter()
-    private searchbarValue = '' 
+    private searchbarValue = ''
+    private modalIsOpen = false
+    private socketClient?: SocketClient
 
     data() {
         return {
             ellipsisVerticalOutline: ellipsisVerticalOutline
         }
+    }
+
+    beforeCreate() {
+        this.socketClient = SocketClient.getInstance(this.$storage)
+    }
+
+    mounted() {
+        this.socketClient?.openSocket()
     }
 
     doFilter(e: CustomEvent): void {

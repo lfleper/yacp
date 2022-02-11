@@ -1,5 +1,5 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
+import {createRouter, createWebHistory} from '@ionic/vue-router';
+import {RouteRecordRaw} from 'vue-router';
 import LoginPage from '../views/LoginPage.vue'
 import OverviewPage from '../views/OverviewPage.vue'
 import ChatPage from '../views/ChatPage.vue'
