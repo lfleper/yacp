@@ -25,7 +25,7 @@ import {Vue, Options} from 'vue-class-component'
 import {IonList, IonListHeader, IonTitle, IonItem, IonLabel, IonAvatar} from '@ionic/vue'
 import {SearchContact} from '@/types/SearchContact'
 import {UserSearchApi} from '@/api/UserSearchApi'
-import { ChatApi } from '@/api/ChatApi'
+import {ChatApi} from '@/api/ChatApi'
 
 @Options({
     components: {
@@ -35,7 +35,8 @@ import { ChatApi } from '@/api/ChatApi'
         IonItem,
         IonLabel,
         IonAvatar
-    }
+    },
+    emits: ['change:segment']
 })
 export default class ContactComponent extends Vue {
     private contacts: SearchContact[] = []
@@ -57,9 +58,12 @@ export default class ContactComponent extends Vue {
         }
     }
 
-    async createChat(contact: SearchContact): Promise<void> {
-        await this.chatApi?.createChat([contact], contact.username)
-        console.log('chat created')
+    createChat(contact: SearchContact): void {
+        this.chatApi?.createChat([contact], contact.username)
+            .then(() => {
+                this.$emit('change:segment')
+            })
+            .catch(err => console.log(err))
     }
 
     get getContacts(): SearchContact[] {

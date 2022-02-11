@@ -43,13 +43,6 @@ import {MessageApi} from "../api/MessageApi";
 import ChatComponent from '@/components/ChatComponent.vue'
 import {SocketClient} from '@/api/SocketClient'
 
-/**
- * Interface to bypass the typecheck of ts.
- */
-interface IonContentInterface {
-    scrollToBottom(x?: number): Promise<void>
-}
-
 @Options({
     components: {
         IonContent,

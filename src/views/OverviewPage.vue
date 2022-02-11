@@ -20,7 +20,7 @@
 
         <ion-content>
             <conversation-component v-if="activeSegment === 'conversations'" ref="conversationComponent"></conversation-component>
-            <search-contact-component v-if="activeSegment === 'search'" ref="searchContactComponent"></search-contact-component>
+            <search-contact-component v-if="activeSegment === 'search'" ref="searchContactComponent" @change:segment="goToConversations"></search-contact-component>
         </ion-content>
 
         <ion-footer collapse="fade">
@@ -44,7 +44,7 @@
 import {Vue, Options} from 'vue-class-component'
 import {
     IonContent, IonPage, IonHeader, IonToolbar, IonSearchbar, IonLabel, IonSegment, 
-    IonSegmentButton, IonFooter, IonPopover, IonIcon, IonButton, IonItem, IonButtons
+    IonSegmentButton, IonFooter, IonPopover, IonIcon, IonButton, IonItem, IonButtons 
 } from '@ionic/vue'
 import {ellipsisVerticalOutline} from 'ionicons/icons'
 import ConversationComponent from '@/components/ConversationComponent.vue'
@@ -99,6 +99,10 @@ export default class OverviewPage extends Vue {
         } else if(this.activeSegment === 'search') {
             (this.$refs.searchContactComponent as any).filterContacts(e)
         }
+    }
+
+    goToConversations(): void {
+        this.activeSegment = 'conversations'
     }
 
     async signOut(): Promise<void> {

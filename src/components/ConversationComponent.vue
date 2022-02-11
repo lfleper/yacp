@@ -95,7 +95,6 @@ export default class ConversationComponent extends Vue {
     }
 
     sortConversations(): void {
-        console.log('sorted')
         this.conversations.sort((a, b) => {
             const aDate = (a.last_message_date) ? a.last_message_date.getTime() : 0
             const bDate = (b.last_message_date) ? b.last_message_date.getTime() : 0
