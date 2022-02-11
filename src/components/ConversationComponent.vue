@@ -84,6 +84,7 @@ export default class ConversationComponent extends Vue {
                 if (data) {
                     this.conversations = data
                     this.filteredConversations = data
+                    this.sortConversations()
                 }
             })
             .catch(err => console.log(err))
@@ -92,6 +93,16 @@ export default class ConversationComponent extends Vue {
     mounted() {
         SocketClient.getInstance(this.$storage).addListener(this.onNewChatReceived)
     }
+
+    sortConversations(): void {
+        console.log('sorted')
+        this.conversations.sort((a, b) => {
+            const aDate = (a.last_message_date) ? a.last_message_date.getTime() : 0
+            const bDate = (b.last_message_date) ? b.last_message_date.getTime() : 0
+            return bDate - aDate
+        })
+    }
+
 
     getConversationDateString(date: Date): string {
         if (isToday(date)) {
@@ -122,6 +133,7 @@ export default class ConversationComponent extends Vue {
                     this.filteredConversations = data
                     event.target.complete()
                 }
+                this.sortConversations()
             })
             .catch(err => {
                 console.log(err)
@@ -149,6 +161,7 @@ export default class ConversationComponent extends Vue {
                 last_message_user: chat.full_name
             })
         }
+        this.sortConversations()
     }
 
     filterConversations(e: CustomEvent): void {
