@@ -9,7 +9,7 @@
             </ion-toolbar>
         </ion-header>
 
-        <ion-content class="ion-padding" :scroll-events="true">
+        <ion-content class="ion-padding" scroll-events="true" ref="chatContent" id="chat-content">
             <div v-for="(chat, index) in chats" v-bind:key="chat.id">
                 <div 
                     class="message-date" 
@@ -46,7 +46,7 @@ import ChatComponent from '@/components/ChatComponent.vue'
  * Interface to bypass the typecheck of ts.
  */
 interface IonContentInterface {
-    scrollToBottom(): void
+    scrollToBottom(x?: number): Promise<void>
 }
 
 @Options({
@@ -86,12 +86,12 @@ export default class ChatPage extends Vue {
         const route = useRoute()
         this.conversationId = parseInt(route.params.id[0])
         this.name = route.params.name as string
-        this.content?.scrollToBottom()
 
         this.messageApi?.getMessages(this.conversationId, 15)
             .then(data => {
                 if (data)
                     this.chats = data
+                    this.toBottom()
             })
             .catch(err => console.log('error fetching messages: ', err))
     }
@@ -107,13 +107,17 @@ export default class ChatPage extends Vue {
             .then(data => {
                 data && this.chats.push(data)
                 this.currentMessage = "";
-                this.content?.scrollToBottom()
+                this.toBottom()
             })
             .catch(err => console.log(err))
     }
 
-    get content(): IonContentInterface | null {
-        return document.querySelector('ion-content')
+    toBottom(): void {
+        this.content?.scrollToBottom()
+    }
+
+    get content(): any {
+        return this.$el.querySelector('#chat-content')
     }
 }
 
