@@ -37,10 +37,11 @@
 import {Vue, Options} from 'vue-class-component'
 import {IonContent, IonPage, IonToolbar, IonFooter, IonHeader, IonInput, IonButton, IonIcon, IonTitle} from '@ionic/vue'
 import {sendOutline, chevronBackOutline} from 'ionicons/icons'
-import {Chat} from '@/types/Chat'
+import {Chat, SocketChat} from '@/types/Chat'
 import {useRouter, useRoute} from 'vue-router'
 import {MessageApi} from "../api/MessageApi";
 import ChatComponent from '@/components/ChatComponent.vue'
+import {SocketClient} from '@/api/SocketClient'
 
 /**
  * Interface to bypass the typecheck of ts.
@@ -83,6 +84,7 @@ export default class ChatPage extends Vue {
     }
 
     mounted() {
+        SocketClient.getInstance(this.$storage).addListener(this.onNewChatReceived)
         const route = useRoute()
         this.conversationId = parseInt(route.params.id as string)
         this.name = route.params.name as string
@@ -112,6 +114,18 @@ export default class ChatPage extends Vue {
                 this.toBottom()
             })
             .catch(err => console.log(err))
+    }
+
+    onNewChatReceived(chat: SocketChat): void {
+        if (chat.chat_id === this.conversationId) {
+            this.chats.push({
+                id: chat.id,
+                timestamp: new Date(chat.timestamp),
+                content: chat.content,
+                full_name: chat.full_name,
+                is_sender: chat.is_sender
+            })
+        }
     }
 
     toBottom(): void {
