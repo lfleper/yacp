@@ -36,7 +36,6 @@
         <ion-item v-if="getConversations.length === 0">
             <ion-text>No conversations found.</ion-text>
         </ion-item>
-
     </ion-list>
 </template>
 
@@ -69,6 +68,9 @@ import {SocketClient} from '@/api/SocketClient'
         IonText,
         IonRefresher,
         IonRefresherContent
+    },
+    watch: {
+        'conversations': 'sortConversations'
     }
 })
 export default class ConversationComponent extends Vue {
@@ -170,7 +172,14 @@ export default class ConversationComponent extends Vue {
     }
 
     openChat(conversation: Conversation): void {
-        this.router.push({name: 'Chat', params: { id: conversation.id, name: conversation.name }})
+        this.router.push({
+            name: 'Chat', 
+            params: { 
+                id: conversation.id, 
+                name: conversation.name, 
+                isGroup: conversation.is_group 
+            }
+        })
     }
 
     get getConversations(): Conversation[] {
