@@ -17,7 +17,7 @@
                 >
                     {{this.chats[index].timestamp.toLocaleDateString()}}
                 </div>
-                <chat-component :chat="chat">
+                <chat-component :chat="chat" :is-group="isGroup">
                 </chat-component>
             </div>
         </ion-content>
@@ -63,6 +63,7 @@ export default class ChatPage extends Vue {
     private conversationId?: number
     private name = ''
     private currentMessage = ""
+    private isGroup = 0
     private router = useRouter()
 
     beforeCreate(){
@@ -81,8 +82,8 @@ export default class ChatPage extends Vue {
         const route = useRoute()
         this.conversationId = parseInt(route.params.id as string)
         this.name = route.params.name as string
+        this.isGroup = parseInt(route.params.isGroup as string)
 
-        console.log("Id: " + this.conversationId)
         this.messageApi?.getMessages(this.conversationId, 15)
             .then(data => {
                 if (data)

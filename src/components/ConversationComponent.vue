@@ -170,7 +170,7 @@ export default class ConversationComponent extends Vue {
     }
 
     openChat(conversation: Conversation): void {
-        this.router.push({name: 'Chat', params: { id: conversation.id, name: conversation.name }})
+        this.router.push({name: 'Chat', params: { id: conversation.id, name: conversation.name, isGroup: conversation.is_group }})
     }
 
     get getConversations(): Conversation[] {

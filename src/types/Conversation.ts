@@ -4,7 +4,8 @@ export interface Conversation {
     name: string,
     last_message?: string,
     last_message_date?: Date,
-    last_message_user?: string
+    last_message_user?: string,
+    is_group?: number
 }
 
 export const test_conversations: Conversation[] = [

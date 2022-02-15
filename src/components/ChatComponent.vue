@@ -1,6 +1,9 @@
 <template>
     <div class="chat-item" :class="chat.is_sender ? 'chat-item-sender' : 'chat-item-receiver'">
         <div class="chat-bubble" :class="chat.is_sender ? 'chat-bubble-sender' : 'chat-bubble-receiver'">
+            <div v-if="!chat.is_sender && isGroup === 1" class="username">
+                {{this.chat.full_name}}
+            </div>
             {{chat.content}}
             <div class="chat-time">
                 {{time}}
@@ -15,11 +18,13 @@ import {Chat} from '@/types/Chat'
 
 @Options({
     props: {
-        chat: Object
+        chat: Object,
+        isGroup: Number
     }
 })
 export default class ChatComponent extends Vue {
     private chat!: Chat
+    private isGroup!: number
 
     get time(): string {
         return this.chat.timestamp.toLocaleTimeString([], {timeStyle: 'short'})
@@ -54,6 +59,10 @@ export default class ChatComponent extends Vue {
 }
 .chat-time {
     color: var(--ion-color-dark);
+    font-size: 12px;
+}
+.username {
+    color: lightsalmon;
     font-size: 12px;
 }
 </style>
